@@ -531,7 +531,6 @@ void __attribute__ ((destructor)) osra_destroy()
 #endif
       osra_ocr_destroy();
 }
-
 int osra_process_image(
 #ifdef OSRA_LIB
             const char *image_data,
@@ -569,9 +568,7 @@ int osra_process_image(
       // return global_init_state;
 
       //nick_dev
-      string debug_path = "./debug/";
-      string file_name = string(basename((char*)input_file.c_str()));
-      string debug_name = debug_path + file_name;
+      string debug_name = get_debug_path(input_file);
 
       std::transform(output_format.begin(), output_format.end(), output_format.begin(), ::tolower);
       std::transform(embedded_format.begin(), embedded_format.end(), embedded_format.begin(), ::tolower);
