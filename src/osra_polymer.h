@@ -57,7 +57,7 @@ class point;
 */
 class Polymer {
       public:
-            Polymer(){};
+            Polymer():polymer(false){};
 
             void set_SMILES(string SMILES) {
                   this->SMILES = SMILES;
@@ -74,6 +74,14 @@ class Polymer {
             string get_degree() {
                   return this->degree;
             }
+            
+            bool is_polymer(){
+                  return polymer;
+            }
+
+            void set_polymer() {
+                  this->polymer = true;
+            }
 
             vector<pair<Bracket, Bracket> > brackets;
 
@@ -81,6 +89,7 @@ class Polymer {
             string SMILES;
             string file_name;
             string degree;
+            bool polymer;
 };
 
 class point {

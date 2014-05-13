@@ -1103,7 +1103,8 @@ int osra_process_image(
 #endif
 
       //nick_dev
-      out_stream << polymer.get_degree() << endl;
+      if (polymer.is_polymer())
+            out_stream << polymer.get_degree() << endl;
 
 
       // For Andriod version we will find the structure with maximum confidence value, as the common usecase for Andriod is to analyse the
@@ -1130,6 +1131,7 @@ int osra_process_image(
                         if (output_format != "mol" && !is_reaction)
                         {
                               out_stream << pages_of_structures[l][i];
+                              /*
                               // Hans, canonical and z coords
                               if (output_format == "can" || output_format == "smi") { // create 3D sdf representation
                                     OBMol sdfmol;
@@ -1150,6 +1152,7 @@ int osra_process_image(
                                           out_stream  << sdfconv.WriteString(&sdfmol, true) << endl;
                                     }
                               }
+                              */
                         }
                               // Dump this structure into a separate file:
                               if (!output_image_file_prefix.empty())

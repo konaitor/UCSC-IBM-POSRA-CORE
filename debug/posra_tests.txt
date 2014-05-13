@@ -1,0 +1,36 @@
+# Polymers
+images/Methylmethacrylate.gif
+images/Misdone brackers.pdf
+images/PEG.gif
+images/PolyBLA NCASQ.gif
+images/PolyMethylacrylateSQ.gif
+images/PolyMethylmethacrylate.gif
+images/PolyMethylmethacrylateNB.gif
+images/PolyMethylmethacrylateSQ.gif
+images/PolyMethylmethacrylateSplit.gif
+images/PolyMethylmethacrylate_50.gif
+images/PolyStyrene 50.gif
+images/PolyStyrene NB.gif
+images/PolyStyrene sq.gif
+images/PolyStyrene.gif C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyreneSplit.gif
+images/PolyStyrene_roundn.gif
+images/PolyStyrene_square.gif
+images/PolyStyrene_square1.gif
+images/PolyStyrene_with_Rs.gif
+images/PolyStyrene_with_Rs_roundm.gif
+images/PolyStyrene_with_Rs_roundn.gif
+images/PolyTMC.gif
+images/PolyTMC50.gif
+images/PolyTMC_NB.gif
+images/PolyTMC_SQ.gif
+images/PolyTMC_Split.gif
+images/Square brackets 1.pdf
+images/Square brackets 2.pdf
+images/Square brackets 3.pdf
+images/Styrene monomer.gif
+images/TMC.gif
+images/block_copolymer_A.gif
+images/block_copolymer_B.gif
+images/plot_all_box_0_end.png
+images/polycarbonate.gif
