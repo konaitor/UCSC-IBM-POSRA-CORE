@@ -1056,6 +1056,18 @@ int osra_process_image(
                         }
 
             }
+
+           // igor_dev 
+           vector<vector<string> >::iterator itor = array_of_structures.begin();
+           for(; itor != array_of_structures.end(); ++itor){
+           cout << endl;
+           vector<string>::iterator itor2 = itor->begin();
+           for (; itor2 != itor->end(); ++itor2) {
+                    cout << "Checking STRUCTURE: " << *itor2 << endl;
+           }
+           }
+
+           // end igor_dev
       }
 
       double max_conf = -FLT_MAX;
@@ -1087,6 +1099,9 @@ int osra_process_image(
                   total_structure_count += array_of_structures_page[l][max_res].size();
             }
 
+
+
+      
       double best_bond = 0;
 
       //if (total_structure_count >= STRUCTURE_COUNT)
