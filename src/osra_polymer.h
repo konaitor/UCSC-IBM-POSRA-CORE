@@ -15,6 +15,10 @@ extern "C" {
 #include <fstream> // std::ofstream, std::ifstream
 #include <sstream>
 #include <ctype.h>
+#include <sys/stat.h>  // mkdir
+#include <sys/types.h> // mkdir
+#include <ctime>
+#include <libgen.h>    //basename
 #include "osra.h"
 #include "osra_labels.h"
 
@@ -53,7 +57,7 @@ class point;
 */
 class Polymer {
       public:
-            Polymer(){};
+            Polymer():polymer(false){};
 
             void set_SMILES(string SMILES) {
                   this->SMILES = SMILES;
@@ -70,6 +74,14 @@ class Polymer {
             string get_degree() {
                   return this->degree;
             }
+            
+            bool is_polymer(){
+                  return polymer;
+            }
+
+            void set_polymer() {
+                  this->polymer = true;
+            }
 
             vector<pair<Bracket, Bracket> > brackets;
 
@@ -77,6 +89,7 @@ class Polymer {
             string SMILES;
             string file_name;
             string degree;
+            bool polymer;
 };
 
 class point {
@@ -207,6 +220,8 @@ class Bracket {
             int x1, x2, y1, y2, width, height, tlx, tly, brx, bry, cx1, cy1, cx2, cy2;
             char orientation;
 };
+
+string get_debug_path(string input_file);
 
 void debug_log(string debug_log_name, double ave_bond_length, const vector<atom_t> atoms, const vector<bond_t> bonds);
 

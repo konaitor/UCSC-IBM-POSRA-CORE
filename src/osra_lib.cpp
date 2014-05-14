@@ -531,7 +531,6 @@ void __attribute__ ((destructor)) osra_destroy()
 #endif
       osra_ocr_destroy();
 }
-
 int osra_process_image(
 #ifdef OSRA_LIB
             const char *image_data,
@@ -569,9 +568,7 @@ int osra_process_image(
       // return global_init_state;
 
       //nick_dev
-      string debug_path = "./debug/";
-      string file_name = string(basename((char*)input_file.c_str()));
-      string debug_name = debug_path + file_name;
+      string debug_name = get_debug_path(input_file);
 
       std::transform(output_format.begin(), output_format.end(), output_format.begin(), ::tolower);
       std::transform(embedded_format.begin(), embedded_format.end(), embedded_format.begin(), ::tolower);
@@ -1132,7 +1129,8 @@ int osra_process_image(
 #endif
 
       //nick_dev
-      out_stream << polymer.get_degree() << endl;
+      if (polymer.is_polymer())
+            out_stream << polymer.get_degree() << endl;
 
 
       // For Andriod version we will find the structure with maximum confidence value, as the common usecase for Andriod is to analyse the
@@ -1159,6 +1157,7 @@ int osra_process_image(
                         if (output_format != "mol" && !is_reaction)
                         {
                               out_stream << pages_of_structures[l][i];
+                              /*
                               // Hans, canonical and z coords
                               if (output_format == "can" || output_format == "smi") { // create 3D sdf representation
                                     OBMol sdfmol;
@@ -1179,6 +1178,7 @@ int osra_process_image(
                                           out_stream  << sdfconv.WriteString(&sdfmol, true) << endl;
                                     }
                               }
+                              */
                         }
                               // Dump this structure into a separate file:
                               if (!output_image_file_prefix.empty())

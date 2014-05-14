@@ -2,26 +2,25 @@
 using namespace std;
 using namespace Magick;
 
+string get_debug_path(string input_file) {
+      time_t t;
+      t = time(&t);
+      struct tm *now = localtime(&t);
+      stringstream ss;
+      ss << (now->tm_mon + 1) << "-" << now->tm_mday << "_" << now->tm_hour << ":" << now->tm_min << "_";
+      string file_name = string(basename((char*)input_file.c_str()));
+      size_t extension = file_name.find_first_of(".");
+      file_name.resize(extension);
+      string debug_path = "./debug/" + ss.str() + file_name;
+      mkdir(debug_path.c_str(), 0777);
+      string debug_name = debug_path + "/" + file_name;
+      return debug_name;
+}
+
 void debug_log(string debug_log_name, double ave_bond_length, const vector<atom_t> atoms, const vector<bond_t> bonds){
-      //ofstream debug_file;
-      //debug_file.open(debug_log_name.c_str());
       FILE *debug_file = fopen(debug_log_name.c_str(), "w");
       for(vector<bond_t>::const_iterator bond = bonds.begin(); bond != bonds.end(); ++bond) {
             if (bond->exists) {
-                  /*
-                  debug_file << "Bond " << (bond - bonds.begin()) << ": ";
-                  stringstream x1;
-                  x1 << (double)atoms[bond->a].x;
-                  stringstream y1;
-                  y1 << (double)atoms[bond->a].y;
-                  stringstream x2;
-                  x2 << (double)atoms[bond->b].x;
-                  stringstream y2;
-                  y2 << (double)atoms[bond->b].y;
-                  debug_file << atoms[bond->a].label << " " << atoms[bond->b].label << " ";
-                  debug_file << "X1: " << x1 << " Y1: " << y1 << " X2: " << x2 << " Y2: " << y2;
-                  debug_file << endl;
-                  */
                   fprintf(debug_file, "Bond %4d: ", (bond - bonds.begin()));
                   fprintf(debug_file, "[ %3s%3d ] - [ %3s%3d ]    ", atoms[bond->a].label.c_str(), atoms[bond->a].anum, atoms[bond->b].label.c_str(), atoms[bond->b].anum);
                   fprintf(debug_file, "[ x:%3d y:%3d ] - [ x:%3d y:%3d ]", (int)atoms[bond->a].x, (int)atoms[bond->a].y, (int)atoms[bond->b].x, (int)atoms[bond->b].y);
@@ -30,10 +29,6 @@ void debug_log(string debug_log_name, double ave_bond_length, const vector<atom_
       }
       fprintf(debug_file, "\nAverage Bond Length: %f\n", ave_bond_length);
       fclose(debug_file);
-      //stringstream ss;
-      //ss << ave_bond_length;
-      //debug_file << "Average Bond Length: " << ave_bond_length;
-      //debug_file.close();
 }
 
 void edit_smiles(string &s) {
@@ -148,6 +143,7 @@ void pair_brackets(Polymer &polymer, const vector<Bracket> &brackets) {
                   break;
             }
             if (bracket->get_orientation() == 'l') {
+                  polymer.set_polymer();
                   polymer.brackets.push_back(pair<Bracket, Bracket>(Bracket(), Bracket()));
                   polymer.brackets.back().first = *bracket;
                   ++i;
