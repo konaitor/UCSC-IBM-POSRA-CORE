@@ -16,9 +16,9 @@ print "$counter / $total tests passed.";
 
 sub test {
       my $res = 0;
-      my @io = split(" ", $_[0]);
+      my @io = split(/\|/, $_[0]);
       $io[0] =~s/ /\\ /g;
-      my $input = "./src/osra " . "\"$io[0]\"" . " |";
+      my $input = "./src/osra -f can " . $io[0] . " |";
       open POSRA, $input or die $!;
       my @output = <POSRA>;
       close(POSRA);
@@ -26,9 +26,10 @@ sub test {
             print "\t$_";
       }
       my $i = ((scalar @output) < 2) ? 0 : 1;
+      my $fail = ((scalar @output) > 0) ? 0 : 1;
       chomp($output[$i]);
       chomp($io[1]);
-      if ($output[$i] eq $io[1]) {
+      if (($output[$i] eq $io[1]) and !$fail) {
             print "\t[  \e[32mOK\e[0m  ]\n";
             ++$res;
       } else {
