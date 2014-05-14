@@ -999,6 +999,11 @@ int osra_process_image(
                               int bond_max_type = 0;
                               int real_bonds = count_bonds(bond, n_bond,bond_max_type);
 
+
+
+
+
+
                               //nick_dev begin
                               find_intersection(bond,atom,bracketboxes);
                               pair_brackets(polymer, bracketboxes);
@@ -1009,6 +1014,11 @@ int osra_process_image(
                               count << res_iter;
                               debug_log(debug_name + "_posra_1_" + count.str() + ".log", avg_bond_length, atom, bond); 
                               //nick_dev end
+
+
+
+
+
 
                               if (verbose)
                                     cout << "Final number of atoms: " << real_atoms << ", bonds: " << real_bonds << ", chars: " << n_letters << '.' << endl;
@@ -1057,17 +1067,18 @@ int osra_process_image(
 
             }
 
+
            // igor_dev 
            vector<vector<string> >::iterator itor = array_of_structures.begin();
            for(; itor != array_of_structures.end(); ++itor){
-           cout << endl;
-           vector<string>::iterator itor2 = itor->begin();
-           for (; itor2 != itor->end(); ++itor2) {
-                    cout << "Checking STRUCTURE: " << *itor2 << endl;
+                 cout << endl;
+                 vector<string>::iterator itor2 = itor->begin();
+                 for (; itor2 != itor->end(); ++itor2) {
+                       cout << "Checking STRUCTURE: " << *itor2 << endl;
+                 }
            }
-           }
-
            // end igor_dev
+
       }
 
       double max_conf = -FLT_MAX;
