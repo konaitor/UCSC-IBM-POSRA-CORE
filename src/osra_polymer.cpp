@@ -7,10 +7,10 @@ string get_debug_path(string input_file) {
       t = time(&t);
       struct tm *now = localtime(&t);
       stringstream ss;
-      ss << (now->tm_mon + 1) << "-" << now->tm_mday << "--" << now->tm_hour << ":" << now->tm_min;
+      ss << (now->tm_mon + 1) << "-" << now->tm_mday << "_" << now->tm_hour << ":" << now->tm_min << "_";
       string file_name = string(basename((char*)input_file.c_str()));
       size_t extension = file_name.find_first_of(".");
-      //file_name.resize(extension);
+      file_name.resize(extension);
       string debug_path = "./debug/" + ss.str() + file_name;
       mkdir(debug_path.c_str(), 0777);
       string debug_name = debug_path + "/" + file_name;
