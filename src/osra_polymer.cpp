@@ -1,4 +1,5 @@
 #include "osra_polymer.h" 
+#include <dirent.h>
 using namespace std;
 using namespace Magick;
 
@@ -12,7 +13,8 @@ string get_debug_path(string input_file) {
       size_t extension = file_name.find_first_of(".");
       file_name.resize(extension);
       string debug_path = "./debug/" + ss.str() + file_name;
-      mkdir(debug_path.c_str(), 0777);
+      if(!opendir(debug_path.c_str())) mkdir("./debug", 0777);
+      if(!opendir(debug_path.c_str())) mkdir(debug_path.c_str(), 0777);
       string debug_name = debug_path + "/" + file_name;
       return debug_name;
 }
@@ -21,8 +23,9 @@ void debug_log(string debug_log_name, double ave_bond_length, const vector<atom_
       FILE *debug_file = fopen(debug_log_name.c_str(), "w");
       for(vector<bond_t>::const_iterator bond = bonds.begin(); bond != bonds.end(); ++bond) {
             if (bond->exists) {
-                  fprintf(debug_file, "Bond %4d: ", (bond - bonds.begin()));
-                  fprintf(debug_file, "[ %3s%3d ] - [ %3s%3d ]    ", atoms[bond->a].label.c_str(), atoms[bond->a].anum, atoms[bond->b].label.c_str(), atoms[bond->b].anum);
+                  fprintf(debug_file, "Bond %4d: ", (bond - bonds.begin())+1);
+                  fprintf(debug_file, "[ %4d%3s%4d ] - [ %4d%3s%4d ]    ", bond->a+1, atoms[bond->a].label.c_str(), atoms[bond->a].anum,
+                                                                           bond->b+1, atoms[bond->b].label.c_str(), atoms[bond->b].anum);
                   fprintf(debug_file, "[ x:%3d y:%3d ] - [ x:%3d y:%3d ]", (int)atoms[bond->a].x, (int)atoms[bond->a].y, (int)atoms[bond->b].x, (int)atoms[bond->b].y);
                   fprintf(debug_file, "\n");
             }
@@ -57,7 +60,7 @@ void edit_smiles(string &s) {
 
 void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vector<label_t> labels) {
       // Possible degree characters
-      char possible_letters[] = "nmxyXY";
+      char possible_letters[] = "nmpxyNMPXY";
       // Somtimes OCRAD misinterprets a number for a character i.e. 50 -> 5O
       map<char, char> misread_numbers;
       misread_numbers['O'] = '0';
@@ -121,16 +124,23 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
 
 void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vector<Bracket> &bracketboxes) {
       // As of now it only works on a single pair of brackets
-      if (bracketboxes.size() != 2) return;
+      //if (bracketboxes.size() != 2) return;
       // Iterate through all of the bonds checking to see which ones intersect a detected Bracket
       for (vector<bond_t>::iterator bond = bonds.begin(); bond != bonds.end(); ++bond)
             if (bond->exists) {
-                  bool bracket0 = bracketboxes[0].intersects(*bond, atoms); // Check if the bonds intersects either bracket
-                  bool bracket1 = bracketboxes[1].intersects(*bond, atoms); 
-                  bond->split = (bracket0 || bracket1);
-                  // If the bond is split copy the corresponding orientation to the bond for later use
-                  if (bond->split) 
-                        bond->bracket_orientation = (bracket0) ? bracketboxes[0].get_orientation() : bracketboxes[1].get_orientation();
+                  for (int i = 0; i < bracketboxes.size(); i += 2) {
+                        bool bracket0 = bracketboxes[i  ].intersects(*bond, atoms); // Check if the bonds intersects either bracket
+                        bool bracket1 = bracketboxes[i+1].intersects(*bond, atoms);
+                        //                  bool bracket0 = bracketboxes[0].intersects(*bond, atoms); // Check if the bonds intersects either bracket
+                        //                  bool bracket1 = bracketboxes[1].intersects(*bond, atoms);
+                        if (bracket0 || bracket1) {
+                              bond->split = true;
+                              // If the bond is split copy the corresponding orientation to the bond for later use
+                              //if (bond->split) {
+                              bond->bracket_orientation = (bracket0) ? bracketboxes[i].get_orientation() : bracketboxes[i+1].get_orientation();
+                        }
+                        //bond->bracket_orientation = (bracket0) ? bracketboxes[0].get_orientation() : bracketboxes[1].get_orientation();
+                  }
             }
 }
 
@@ -139,7 +149,7 @@ void pair_brackets(Polymer &polymer, const vector<Bracket> &brackets) {
       int i = 0;
       for (vector<Bracket>::const_iterator bracket = brackets.begin(); bracket != brackets.end(); ++bracket) {
             if (i < 0) {
-                  cerr << "Unmatched bracket" << cout;
+                  cerr << "Unmatched bracket" << endl;
                   break;
             }
             if (bracket->get_orientation() == 'l') {
@@ -153,7 +163,7 @@ void pair_brackets(Polymer &polymer, const vector<Bracket> &brackets) {
             }
       }
       if (i > 0) {
-            cerr << "Unmatched bracket" << cout;
+            cerr << "Unmatched bracket" << endl;
       }
 }
 
@@ -169,6 +179,7 @@ void  split_atom(vector<bond_t> &bonds, vector<atom_t> &atoms, int &n_atom, int 
                   pseudo_atom.exists = true;
                   // Assign Polonium to left oriented brackets and Livermorium to right
                   pseudo_atom.label = (bond->bracket_orientation == 'l') ? "Po" : "Lv";
+                  pseudo_atom.anum  = (bond->bracket_orientation == 'l') ? 84 : 116;
                   atoms.push_back(pseudo_atom);
                   // Create a new bond
                   bond_t newbond(atoms.size()-1, bond->b, bond->curve);
@@ -288,16 +299,18 @@ void find_brackets(Image &img, string debug_name, vector<Bracket> &bracketboxes)
       vector<pair<pair<int, int>,pair<int, int> > > bracketpoints;
       // Find endpoints in the image
       find_endpoints(img, debug_name, endpoints, img.columns(), img.rows(), bracketpoints);
-      if(bracketpoints.size() != 2) return;
+      //if(bracketpoints.size() != 2) return;
       // Iterate over endpoints and convert them into Brackets
       for(vector<pair<pair<int, int>, pair<int, int> > >::iterator itor = bracketpoints.begin(); itor != bracketpoints.end(); ++itor)
             bracketboxes.push_back(Bracket(itor->first, itor->second, img)); 
-      //bracketboxes[bracketboxes.size() - 2].remove_brackets(img);
-      //bracketboxes[bracketboxes.size() - 1].remove_brackets(img);
 
       // Remove the brackets from the image entirely
-      bracketboxes[0].remove_brackets(img);
-      bracketboxes[1].remove_brackets(img);
+      //bracketboxes[0].remove_brackets(img);
+      //bracketboxes[1].remove_brackets(img);
+      for (int i = 0; i < bracketboxes.size(); i++) {
+            bracketboxes[i].remove_brackets(img);
+      }
+
 }
 
 void plot_points(Image &img, const vector<point> &points) {

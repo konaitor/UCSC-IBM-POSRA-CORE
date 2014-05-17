@@ -841,19 +841,6 @@ int osra_process_image(
                               else
                                     box = thick_box;
 
-                              //nick_dev begin
-                              /*
-                              ostringstream ss;
-                              ss << res_iter;
-                              orig_box.write(debug_name + "_orig_box_pass_" + ss.str() + ".gif");
-                              vector<Bracket> bracketboxes;
-                              find_brackets(orig_box, debug_name, *(new vector<Bracket>()));
-                              orig_box.write(debug_name + "_orig_box_removed_pass_" + ss.str() + ".gif");
-                              find_brackets(box, debug_name, bracketboxes);
-                              box.write(debug_name + "_box_removed_pass_" + ss.str() + ".gif");
-                              */
-                              //nick_dev end
-
                               potrace_state_t * const  st = raster_to_vector(box,bgColor,THRESHOLD_BOND,width,height,working_resolution);
                               potrace_path_t const * const p = st->plist;
 
@@ -1066,14 +1053,18 @@ int osra_process_image(
 
 
            // igor_dev 
+
+           FILE *debug_file = fopen((debug_name + "_posra_structure.log").c_str(), "w");
            vector<vector<string> >::iterator itor = array_of_structures.begin();
            for(; itor != array_of_structures.end(); ++itor){
-                 cout << endl;
+                 fprintf(debug_file, "\n");
                  vector<string>::iterator itor2 = itor->begin();
                  for (; itor2 != itor->end(); ++itor2) {
-                       cout << "Checking STRUCTURE: " << *itor2 << endl;
+                       //cout << "Checking STRUCTURE: " << *itor2 << endl;
+                       fprintf(debug_file, "Checking STRUCTURE: %s\n", itor2->c_str());
                  }
            }
+           fclose(debug_file);
            // end igor_dev
 
       }

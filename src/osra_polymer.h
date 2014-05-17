@@ -88,6 +88,7 @@ class Polymer {
       private:
             string SMILES;
             string file_name;
+            // TODO: Make this a vector for each bracket
             string degree;
             bool polymer;
 };
@@ -132,6 +133,7 @@ class Bracket {
                   bool found = false;
                   for(int y = tly; y < bry; ++y){
                         //Record bond location
+                        //TODO: height / 4 ???
                         if(!found && abs(y-tly) > height / 4 && ColorGray(img.pixelColor(x1, y)).shade() < 1.0){
                               cx1 = x1;
                               cy1 = y;

@@ -1520,6 +1520,7 @@ void remove_small_terminal_bonds(vector<bond_t> &bond, int n_bond, vector<atom_t
       for (int j = 0; j < n_bond; j++)
         if (bond[j].exists && bond[j].type == 1 && !bond[j].wedge && !bond[j].hash && !bond[j].arom && bond_length(bond, j, atom) < avg / 2)
           {
+            if (atom[bond[j].a].label == "Po" || atom[bond[j].a].label == "Lv" || atom[bond[j].b].label == "Po" || atom[bond[j].b].label == "Lv") continue;
             bool not_corner_a = terminal_bond(bond[j].a, j, bond, n_bond);
             bool not_corner_b = terminal_bond(bond[j].b, j, bond, n_bond);
             if (not_corner_a)
