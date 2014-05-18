@@ -678,7 +678,7 @@ int osra_process_image(
 
       //nick_dev
       //Declare polymer data type to store relevant information
-      Polymer polymer;
+      vector<Polymer> polymer;
 
 #pragma omp parallel for default(shared) private(OCR_JOB,JOB)
       for (int l = 0; l < page; l++)
@@ -822,6 +822,7 @@ int osra_process_image(
                               int height = orig_box.rows();
 
                               //nick_dev
+                              polymer.push_back(Polymer());
                               ostringstream ss;
                               ss << res_iter;
                               orig_box.write(debug_name + "_orig_box_pass_" + ss.str() + ".gif");
@@ -983,31 +984,21 @@ int osra_process_image(
                               int bond_max_type = 0;
                               int real_bonds = count_bonds(bond, n_bond,bond_max_type);
 
-
-
-
-
-
                               //nick_dev begin
                               find_intersection(bond,atom,bracketboxes);
-                              pair_brackets(polymer, bracketboxes);
+                              pair_brackets(polymer.back(), bracketboxes);
                               split_atom(bond, atom, n_atom, n_bond);
-                              find_degree(polymer, letters, label);
+                              find_degree(polymer.back(), letters, label);
                               plot_all(orig_box, debug_name, k, "end", atom, bond, letters, label);
                               stringstream count;
                               count << res_iter;
                               debug_log(debug_name + "_posra_1_" + count.str() + ".log", avg_bond_length, atom, bond); 
                               //nick_dev end
 
-
-
-
-
-
                               if (verbose)
                                     cout << "Final number of atoms: " << real_atoms << ", bonds: " << real_bonds << ", chars: " << n_letters << '.' << endl;
 
-                              split_fragments_and_assemble_structure_record(polymer,atom,n_atom,bond,n_bond,boxes,
+                              split_fragments_and_assemble_structure_record(polymer.back(),atom,n_atom,bond,n_bond,boxes,
                                           l,k,resolution,res_iter,output_image_file_prefix,image,orig_box,real_font_width,real_font_height,
                                           thickness,avg_bond_length,superatom,real_atoms,real_bonds,bond_max_type,
                                           box_scale,page_scale,rotation,unpaper_dx,unpaper_dy,output_format,embedded_format,is_reaction,show_confidence,
@@ -1119,11 +1110,6 @@ int osra_process_image(
       ostream &out_stream = outfile.is_open() ? outfile : cout;
 #endif
 
-      //nick_dev
-      if (polymer.is_polymer())
-            out_stream << polymer.get_degree() << endl;
-
-
       // For Andriod version we will find the structure with maximum confidence value, as the common usecase for Andriod is to analyse the
       // image (taken by embedded photo camera) that usually contains just one molecule:
       double max_confidence = -FLT_MAX;
@@ -1218,6 +1204,13 @@ int osra_process_image(
                   }
             }
       }
+
+      //nick_dev
+      if (polymer[l_index + i_index].is_polymer())
+            for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer[l_index + i_index].brackets.begin(); bracket != polymer[l_index + i_index].brackets.end(); ++bracket) {
+                  out_stream << bracket->first.get_degree() << endl;
+            }
+
       // Output the structure with maximum confidence value:
       if (output_format == "mol")
       {

@@ -67,14 +67,6 @@ class Polymer {
                   this->file_name = file_name;
             };
 
-            void set_degree(const string degree) {
-                  this->degree = degree;
-            };
-
-            string get_degree() {
-                  return this->degree;
-            }
-            
             bool is_polymer(){
                   return polymer;
             }
@@ -88,8 +80,6 @@ class Polymer {
       private:
             string SMILES;
             string file_name;
-            // TODO: Make this a vector for each bracket
-            string degree;
             bool polymer;
 };
 
@@ -218,9 +208,30 @@ class Bracket {
                   return orientation;
             }
 
+            void set_degree(string degree) {
+                  this->degree = degree;
+            }
+
+            string get_degree() {
+                  return this->degree;
+            }
+
+            int get_bottom_right_x() {
+                  return this->brx;
+            }
+
+            int get_bottom_right_y() {
+                  return this->bry;
+            }
+
+            int get_height() {
+                  return this->height;
+            }
+
       private:
             int x1, x2, y1, y2, width, height, tlx, tly, brx, bry, cx1, cy1, cx2, cy2;
             char orientation;
+            string degree;
 };
 
 string get_debug_path(string input_file);

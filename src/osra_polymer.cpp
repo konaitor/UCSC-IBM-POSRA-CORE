@@ -67,7 +67,9 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
       misread_numbers['o'] = '0';
       // A collection of possible, or multiple degree characters, these could be a single character
       //  like n, or a string like "50"
-      vector<string> degrees;
+      // The second in the pair, int, will represent the distance from the origin to associate to a
+      //  a bracket
+      vector<pair<string, double> > degrees;
       // First we check for strings, i.e. "50"
       for (vector<label_t>::const_iterator label = labels.begin(); label != labels.end(); ++label) {
             int degree;
@@ -95,8 +97,10 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
                               }
                         }
                   }
-                  if (!not_number)
-                        degrees.push_back(s);
+                  if (!not_number) {
+                        double dis = sqrt((label->x1 * label->x1) + (label->y1 * label->y1));
+                        degrees.push_back(make_pair(s, dis));
+                  }
             }
       }
       // Next we check for characters, i.e. 'n'
@@ -104,20 +108,31 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
             if (letter->free) {
                   for (int i = 0; i < (sizeof(possible_letters) / sizeof(char)); ++i) {
                         // If a free (unassigned) letter is a possible degree specifier push it back!
-                        if (letter->a == possible_letters[i]) degrees.push_back(string(1L, letter->a));
+                        if (letter->a == possible_letters[i]) {
+                              double dis = sqrt((letter->x * letter->x) + (letter->y * letter->y));
+                              degrees.push_back(make_pair(string(1L, letter->a), dis));
+                        }
                   }
             }
       }
       // Debug print, need to formalize and associate with a bracket within a polymer
-      /*
-      for (vector<string>::iterator degree = degrees.begin(); degree != degrees.end(); ++degree) {
-            cout << *degree << endl;
+      for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++degree) {
+            cout << degree->first << endl;
       }
-      */
       // Right now it just takes the first degree that it could be associated with
       if (!degrees.empty()) {
-            polymer.set_degree(degrees.front());
-            //cout << polymer.get_degree() << endl;
+            for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer.brackets.begin(); bracket != polymer.brackets.end(); ++bracket) {
+                  double brx = (double)bracket->second.get_bottom_right_x();
+                  double bry = (double)bracket->second.get_bottom_right_y();
+                  double b_dis = sqrt((brx * brx) + (bry * bry));
+                  double threshold = (double)bracket->second.get_height();
+                  for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++degree) {
+                        if (fabs(b_dis - degree->second) < threshold) {
+                              bracket->first.set_degree(degree->first);
+                              bracket->second.set_degree(degree->first);
+                        }
+                  }
+            }
       }
 
 }
