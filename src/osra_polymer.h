@@ -121,6 +121,7 @@ class Bracket {
                   int r_cx2 = 0;
                   int r_cy2 = 0;
                   bool found = false;
+                  float color_threshold = 0.6;
                   for(int y = tly; y < bry; ++y){
                         //Record bond location
                         //TODO: height / 4 ???
@@ -160,12 +161,35 @@ class Bracket {
                         ++cx1;
                         cx2 = l_cx2 - 1;
                         cy2 = l_cy2;
+                        int v_threshold = 5;
+                        int h_threshold = 4;
+                        int prev_y = cy1;
+                        for (int x = cx1; x > (cx1 - width - h_threshold); --x) {
+                              double ave_line = 0.0;
+                              int total_line = 0;
+                              for (int y = prev_y - v_threshold; y < prev_y + v_threshold; ++y) {
+                                    if (x < 0 || y < 0 || x >= img.columns() || y >= img.rows())
+                                          break;
+                                    if (ColorGray(img.pixelColor(x, y)).shade() < color_threshold) {
+                                          ave_line += y;
+                                          ++total_line;
+                                    }
+                              }
+                              if (total_line) 
+                                    prev_y = (int) ave_line / total_line;
+                              else
+                                    break;
+                        }
+                        cx2 = (cx1 - width - h_threshold);
+                        cy2 = prev_y;
+                        /*
                         for(int y = tly; y < bry; ++y)
                               if(ColorGray(img.pixelColor(tlx - 1, y)).shade() < 1.0){
                                     cx2 = tlx - 1;
                                     cy2 = y;
                                     break;
                               }
+                              */
                   }else{
                         orientation = 'r';
                         width = r_width;
@@ -174,12 +198,33 @@ class Bracket {
                         --cx1;
                         cx2 = r_cx2 + 1;
                         cy2 = r_cy2;
+                        int v_threshold = 5;
+                        int h_threshold = 5;
+                        int prev_y = cy1;
+                        for (int x = cx1; x < (cx1 + width + h_threshold); ++x) {
+                              double ave_line = 0.0;
+                              int total_line = 0;
+                              for (int y = prev_y - v_threshold; y < prev_y + v_threshold; ++y) {
+                                    if (ColorGray(img.pixelColor(x, y)).shade() < color_threshold) {
+                                          ave_line += y;
+                                          ++total_line;
+                                    }
+                              }
+                              if (total_line) 
+                                    prev_y = (int) ave_line / total_line;
+                              else
+                                    break;
+                        }
+                        cx2 = (cx1 + width + h_threshold);
+                        cy2 = prev_y;
+                        /*
                         for(int y = tly; y < bry; ++y)
                               if(ColorGray(img.pixelColor(brx + 1, y)).shade() < 1.0){
                                     cx2 = brx + 1;
                                     cy2 = y;
                                     break;
                               }
+                              */
                   }
             };
             

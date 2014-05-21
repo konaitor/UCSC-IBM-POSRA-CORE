@@ -1206,10 +1206,23 @@ int osra_process_image(
       }
 
       //nick_dev
+      for (vector<Polymer>::iterator poly = polymer.begin(); poly != polymer.end(); ++poly) {
+            bool found = false;
+            if (poly->is_polymer())
+                  for (vector<pair<Bracket, Bracket> >::iterator bracket = poly->brackets.begin(); bracket != poly->brackets.end(); ++bracket) {
+                        if (bracket->first.get_degree() != "") {
+                              found = true;
+                              out_stream << bracket->first.get_degree() << endl;
+                        }
+                  }
+            if (found) break;
+      }
+      /* RIGHT NOW OFTEN THE MAX CONFIDENCE CHOSEN DOESN'T PICK CORRECT DEGREE WHEREAS FIRST PASS ALMOST ALWAYS GETS IT
       if (polymer[l_index + i_index].is_polymer())
             for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer[l_index + i_index].brackets.begin(); bracket != polymer[l_index + i_index].brackets.end(); ++bracket) {
                   out_stream << bracket->first.get_degree() << endl;
             }
+      */
 
       // Output the structure with maximum confidence value:
       if (output_format == "mol")

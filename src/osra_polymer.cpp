@@ -115,10 +115,12 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
                   }
             }
       }
+      /*
       // Debug print, need to formalize and associate with a bracket within a polymer
       for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++degree) {
             cout << degree->first << endl;
       }
+      */
       // Right now it just takes the first degree that it could be associated with
       if (!degrees.empty()) {
             for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer.brackets.begin(); bracket != polymer.brackets.end(); ++bracket) {

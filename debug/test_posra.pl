@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-open FILE, "<", "./debug/posra_tests.txt" or die $!;
+open FILE, "<", "./debug/posra_test.txt" or die $!;
 my @image_paths = <FILE>;
 close(FILE);
 my $counter = 0;
@@ -27,9 +27,9 @@ sub test {
       }
       my $i = ((scalar @output) < 2) ? 0 : 1;
       my $fail = ((scalar @output) > 0) ? 0 : 1;
-      chomp($output[$i]);
-      chomp($io[1]);
-      if (($output[$i] eq $io[1]) and !$fail) {
+      chomp($output[0]);
+      chomp($io[(scalar @io) - 1]);
+      if (($output[0] eq $io[(scalar @io) - 1]) and !$fail) {
             print "\t[  \e[32mOK\e[0m  ]\n";
             ++$res;
       } else {
