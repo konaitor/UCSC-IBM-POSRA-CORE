@@ -18,7 +18,7 @@ sub test {
       my $res = 0;
       my @io = split(/\|/, $_[0]);
       $io[0] =~s/ /\\ /g;
-      my $input = "./src/osra -f can " . $io[0] . " |";
+      my $input = "./src/osra -f can -r 150 " . $io[0] . " |";
       open POSRA, $input or die $!;
       my @output = <POSRA>;
       close(POSRA);
