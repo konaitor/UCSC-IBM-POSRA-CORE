@@ -1,0 +1,40 @@
+# Comments are behind #
+# Add to this file:
+#   path_to_image|CORRECT_SMILES_STRING
+images/MMA.jpg|COC(=O)C(=C)C
+images/Methylmethacrylate.gif|COC(=O)C(=C)C
+images/PEG.gif|CO[Po]|CCO[Lv][H]
+images/EG.gif|OCCO
+images/PMMA.gif|C[Po]CC(C)(C(=O)COC)[Lv]C
+images/PolyBLA_NCASQ.gif|CCCCCCC[Po]NC(=O)C(CCC(=O)OCc1ccccc1)[Lv]N
+images/PolyCarbonate.gif|m\n|C[Po]C(=O)OCCCO[Lv]C(=O)C
+images/PolyMethylacrylateSQ.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
+images/PolyMethylmethacrylate.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
+images/PolyMethylmethacrylateSQ.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
+images/PolyMethylmethacrylate_50.gif|C[Po]CC(C(=O)OC)([Lv]C)C
+images/PolyStyrene.gif|n\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_50.gif|50\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_SQ.gif|n\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_roundn.gif|n\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_roundn_narrowgap.gif|n\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_square.gif|m\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_square1.gif|m\n|C[Po]CC(c1ccccc1)[Lv]C
+images/PolyStyrene_with_Rs.gif|m\n|*[Po]CC(c1ccccc1)[Lv]*
+images/PolyStyrene_with_Rs_roundm.gif|m\n|*[Po]CC(c1ccccc1)[Lv]*
+images/PolyStyrene_with_Rs_roundn.gif|n\n|*[Po]CC(c1ccccc1)[Lv]*
+images/PolyTMC.gif|n\n|OC(OCCCO[Lv]C(=O)C)[Po]COCCCCc1ccc2c3c1ccc1c3c(cc2)ccc1
+images/PolyTMC50.gif|50\n|OC(OCCCO[Lv]C(=O)C)[Po]COCCCCc1ccc2c3c1ccc1c3c(cc2)ccc1
+images/PolyTMC_SQ.gif|n\n|OC(OCCCO[Lv]C(=O)C)[Po]COCCCCc1ccc2c3c1ccc1c3c(cc2)ccc1
+images/Polypropylene.gif|C[Po]C(C)C[Lv]C
+images/PP.gif|C[Po]C(C)C[Lv]C
+images/Styrene_monomer.gif|C=Cc1ccccc1
+images/Styrene_with_Rns.gif|*/C=C(\c1cccc(c1)*)/C
+images/Styrene_with_Rs.gif|*/C=C(\c1cccc(c1)*)/C
+images/TMC.gif|O=C1OCCCO1
+images/block_copolymer_A.gif|n\nm\n|C[Po]OCC[Lv]O[Po]C(=O)OCCCO[Lv]C(=O)C
+images/block_copolymer_B.gif|m\nn\n|C[Po]CC(c1ccccc1)[Lv][Po]CC(C(=O)OC)([Lv]C)C
+images/block_copolymer_C.gif|n\nm\n|C[Lv]CCCCOC(=O)[Po][Lv]CCO[Po]C
+images/iso_pentane.gif|CCC(C)C
+images/iso_pentane_H.gif|CCC(C)C
+images/patent1.gif|OC(=O)C(CCCCOCCCCC(C(=O)O)(C)C)(C)C
+#images/stuff.jpg|
