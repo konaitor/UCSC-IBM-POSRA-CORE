@@ -209,9 +209,12 @@ void  split_atom(vector<bond_t> &bonds, vector<atom_t> &atoms, int &n_atom, int 
 
 void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &endpoints, int width, int height, vector<pair<pair<int, int>, pair<int, int> > > &bracketpoints) {
       const unsigned int SIDE_GROUP_SIZE = 2;
-      const unsigned int BRACKET_MIN_SIZE = 5;
+      const unsigned int BRACKET_MIN_SIZE = height/6;
+      unsigned int CURSOR_SIZE = 2;
+      vector<pair<pair<int,int>,pair<int,int> > > temp_brackets;
       for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
+                  //if (ColorGray(detect.pixelColor(i,j)).shade() == 1.0) continue;
                   int adj_groups = 0; // The number of side groups that contain at least 1 non-white pixel
                   vector<ColorGray> north, south, east, west;
                   vector<vector<ColorGray > > sides;
@@ -219,13 +222,20 @@ void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &en
                   // Populate the side-groups vectors with the correct Color objects
                   for (int n = 1; n <= SIDE_GROUP_SIZE; n++ ) {
                         north.push_back (detect.pixelColor(i,j-n));
-                        north.push_back (detect.pixelColor(i+1,j-n));
+                        for (int m = 1; m < CURSOR_SIZE; ++m)
+                            north.push_back (detect.pixelColor(i+m,j-n));
+
                         west.push_back  (detect.pixelColor(i-n,j));
-                        west.push_back  (detect.pixelColor(i-n,j+1));
-                        south.push_back (detect.pixelColor(i,j+(n+1)));
-                        south.push_back (detect.pixelColor(i+1,j+(n+1)));
-                        east.push_back  (detect.pixelColor(i+(n+1),j));
-                        east.push_back  (detect.pixelColor(i+(n+1),j+1));
+                        for (int m = 1; m < CURSOR_SIZE; ++m)
+                            west.push_back  (detect.pixelColor(i-n,j+m));
+                        
+                        south.push_back (detect.pixelColor(i,j+(n+CURSOR_SIZE-1)));
+                        for (int m = 1; m < CURSOR_SIZE; ++m)
+                            south.push_back (detect.pixelColor(i+m,j+(n+CURSOR_SIZE-1)));
+
+                        east.push_back  (detect.pixelColor(i+(n+CURSOR_SIZE-1),j));
+                         for (int m = 1; m < CURSOR_SIZE; ++m)
+                            east.push_back  (detect.pixelColor(i+(n+CURSOR_SIZE-1),j+m));
                   }
                   // Add each side-group vector the the sides vector
                   sides.push_back(north); sides.push_back(south); sides.push_back(east); sides.push_back(west);
@@ -241,9 +251,9 @@ void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &en
                   }
                   if (adj_groups == 0) continue;
 
-                  // If the current pixel, or the pixel to its immediate right are non-white,
-                  // and 3 of the adjacent groups are completely white, then add the current
-                  // pixel (or immediate right) to list of endpoints.
+                  //If the current pixel, or the pixel to its immediate right are non-white,
+                  //and 3 of the adjacent groups are completely white, then add the current
+                 // pixel (or immediate right) to list of endpoints.
                   ColorGray current_pixel = detect.pixelColor(i,j);
                   ColorGray current_right = detect.pixelColor(i+1,j);
                   if (adj_groups == 1 && (current_pixel.shade() < 1 || current_right.shade() < 1)) {
@@ -308,6 +318,7 @@ void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &en
                   }
             }
       }
+
       detect.write(debug_name + "_endpoints_detect.gif");
 }
 
