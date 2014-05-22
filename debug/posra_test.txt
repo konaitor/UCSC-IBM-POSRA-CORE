@@ -28,7 +28,7 @@ images/PolyTMC_SQ.gif|n\n|OC(OCCCO[Lv]C(=O)C)[Po]COCCCCc1ccc2c3c1ccc1c3c(cc2)ccc
 images/Polypropylene.gif|C[Po]C(C)C[Lv]C
 images/PP.gif|C[Po]C(C)C[Lv]C
 images/Styrene_monomer.gif|C=Cc1ccccc1
-images/Styrene_with_Rns.gif|*/C=C(\c1cccc(c1)*)/C
+images/Styrene_with_Rns.gif|[*:1]/C=C(\c1cccc(c1)[*:2])/C
 images/Styrene_with_Rs.gif|*/C=C(\c1cccc(c1)*)/C
 images/TMC.gif|O=C1OCCCO1
 images/block_copolymer_A.gif|n\nm\n|C[Po]OCC[Lv]O[Po]C(=O)OCCCO[Lv]C(=O)C
