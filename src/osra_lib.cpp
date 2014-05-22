@@ -476,7 +476,7 @@ void split_fragments_and_assemble_structure_record(
 
 int count_recognized_chars(vector<atom_t>  &atom, vector<bond_t>& bond)
 {
-      string char_filter = "oOcCNHsSBMeEXYZRPp23456789AF";
+      string char_filter = "oOcCNHsSBMeEXYZRPp123456789AF";
       set<int> atoms;
       for (int i=0; i<bond.size(); i++)
             if (bond[i].exists)
