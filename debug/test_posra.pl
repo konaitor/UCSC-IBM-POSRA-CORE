@@ -4,14 +4,15 @@ open FILE, "<", "./debug/posra_test.txt" or die $!;
 my @image_paths = <FILE>;
 close(FILE);
 my $counter = 0;
+my $total = 0;
 foreach (@image_paths) {
       if (substr($_, 0, 1) ne "#") {
             print $_;
             $counter += test($_);
             print "\n";
+            ++$total
       }
 }
-my $total = scalar(@image_paths);
 print "$counter / $total tests passed.";
 
 sub test {

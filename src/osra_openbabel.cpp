@@ -22,6 +22,7 @@
 #include <openbabel/builder.h>
 #include <openbabel/alias.h>
 #include <openbabel/stereo/tetrahedral.h>
+#include <openbabel/atomclass.h>
 
 #include <sstream> // std:ostringstream
 #include <iostream> // std::cerr
@@ -649,6 +650,33 @@ const string get_formatted_structure(vector<atom_t> &atom, const vector<bond_t> 
         mol.SetData(label);
       }
 
+    if (format == "smi" || format == "can") { // ensure that R groups' subscripts (if any) are honored in resulting SMILES
+      OBAtomIterator atom_iter;
+      for (OBAtom* a = mol.BeginAtom(atom_iter); a; a = mol.NextAtom(atom_iter)) {
+        if (a->GetAtomicNum() == 0) {
+          AliasData* ad = (AliasData*) a->GetData("UserLabel");
+          if (ad == NULL) continue;
+          string alias = ad->GetAlias();
+          if (alias[0] == 'R' && (alias[1] == '\'' || isdigit(alias[1]))) {
+            unsigned int n = 1;
+            if (alias[1] == '\'') {
+              while (n < alias.size()-1 && alias[n] == alias[n+1]) n++;
+            } else {
+              n = atoi(alias.c_str()+1);
+            }
+
+            OBAtomClassData* pac = static_cast<OBAtomClassData*>(mol.GetData("Atom Class"));
+            if (!pac) {
+              pac = new OBAtomClassData;
+              mol.SetData(pac);
+            }
+            if (verbose) cout << "Setting atom class for alias " << alias << " " << a->GetIdx() << " " << n << endl;
+            pac->Add(a->GetIdx(), n);
+    	  }
+        }
+      }
+    }
+
     if (!embedded_format.empty())
       {
         string value;
@@ -684,6 +712,7 @@ const string get_formatted_structure(vector<atom_t> &atom, const vector<bond_t> 
     OBConversion conv;
 
     conv.SetOutFormat(format.c_str());
+    if (format == "smi" || format == "can") conv.SetOptions("a", conv.OUTOPTIONS); // Output atomclass like [*:2], if available; useful for R groups
     conv.Read(&mol);
 
     strstr << conv.WriteString(&mol, true);

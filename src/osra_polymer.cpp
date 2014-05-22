@@ -209,8 +209,9 @@ void  split_atom(vector<bond_t> &bonds, vector<atom_t> &atoms, int &n_atom, int 
 
 void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &endpoints, int width, int height, vector<pair<pair<int, int>, pair<int, int> > > &bracketpoints) {
       const unsigned int SIDE_GROUP_SIZE = 2;
-      const unsigned int BRACKET_MIN_SIZE = height/6;
+      const unsigned int BRACKET_MIN_SIZE = height/8;
       unsigned int CURSOR_SIZE = 2;
+      //cout << BRACKET_MIN_SIZE << endl;
       vector<pair<pair<int,int>,pair<int,int> > > temp_brackets;
       for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

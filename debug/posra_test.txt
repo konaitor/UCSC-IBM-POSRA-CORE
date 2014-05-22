@@ -10,7 +10,7 @@ images/PolyBLA_NCASQ.gif|CCCCCCC[Po]NC(=O)C(CCC(=O)OCc1ccccc1)[Lv]N
 images/PolyCarbonate.gif|m\n|C[Po]C(=O)OCCCO[Lv]C(=O)C
 images/PolyMethylacrylateSQ.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
 images/PolyMethylmethacrylate.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
-images/PolyMethylmethacrylateSQ.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
+images/PolyMethylmethacrylateSQ.gif|C[Po]CC(C(=O)OC)([Lv]C)C
 images/PolyMethylmethacrylate_50.gif|C[Po]CC(C(=O)OC)([Lv]C)C
 images/PolyStyrene.gif|n\n|C[Po]CC(c1ccccc1)[Lv]C
 images/PolyStyrene_50.gif|50\n|C[Po]CC(c1ccccc1)[Lv]C
@@ -28,7 +28,7 @@ images/PolyTMC_SQ.gif|n\n|OC(OCCCO[Lv]C(=O)C)[Po]COCCCCc1ccc2c3c1ccc1c3c(cc2)ccc
 images/Polypropylene.gif|C[Po]C(C)C[Lv]C
 images/PP.gif|C[Po]C(C)C[Lv]C
 images/Styrene_monomer.gif|C=Cc1ccccc1
-images/Styrene_with_Rns.gif|*/C=C(\c1cccc(c1)*)/C
+images/Styrene_with_Rns.gif|[*:1]/C=C(\c1cccc(c1)[*:2])/C
 images/Styrene_with_Rs.gif|*/C=C(\c1cccc(c1)*)/C
 images/TMC.gif|O=C1OCCCO1
 images/block_copolymer_A.gif|n\nm\n|C[Po]OCC[Lv]O[Po]C(=O)OCCCO[Lv]C(=O)C
