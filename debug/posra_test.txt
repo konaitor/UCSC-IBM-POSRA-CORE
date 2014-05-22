@@ -10,7 +10,7 @@ images/PolyBLA_NCASQ.gif|CCCCCCC[Po]NC(=O)C(CCC(=O)OCc1ccccc1)[Lv]N
 images/PolyCarbonate.gif|m\n|C[Po]C(=O)OCCCO[Lv]C(=O)C
 images/PolyMethylacrylateSQ.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
 images/PolyMethylmethacrylate.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
-images/PolyMethylmethacrylateSQ.gif|CCOC(=O)C(C)(C)[Po]CC(C(=O)OC)[Lv][Br]
+images/PolyMethylmethacrylateSQ.gif|C[Po]CC(C(=O)OC)([Lv]C)C
 images/PolyMethylmethacrylate_50.gif|C[Po]CC(C(=O)OC)([Lv]C)C
 images/PolyStyrene.gif|n\n|C[Po]CC(c1ccccc1)[Lv]C
 images/PolyStyrene_50.gif|50\n|C[Po]CC(c1ccccc1)[Lv]C
