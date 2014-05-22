@@ -423,7 +423,7 @@ int find_numbers(const potrace_path_t * p, const Image &orig, vector<letters_t> 
   int max_font_width, max_font_height;
   vector<int> widths, heights;
   for (int i=0; i<n_letters; i++)
-    if (letters[i].a >= '2' && letters[i].a <= '9')
+    if (letters[i].a >= '1' && letters[i].a <= '9')
       {
 	widths.push_back(letters[i].max_x - letters[i].min_x+1);
 	heights.push_back(letters[i].max_y - letters[i].min_y+1);
