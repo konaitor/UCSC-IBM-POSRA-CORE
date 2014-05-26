@@ -105,6 +105,30 @@ class Bracket {
 
             Bracket(){};
 
+            Bracket &operator=(const Bracket &bracket) {
+                  x1 = bracket.x1;
+                  x2 = bracket.x2;
+                  y1 = bracket.y1;
+                  y2 = bracket.y2;
+                  width = bracket.width;
+                  height = bracket.height;
+                  tlx = bracket.tlx;
+                  tly = bracket.tly;
+                  brx = bracket.brx;
+                  bry = bracket.bry;
+                  cx1 = bracket.cx1;
+                  cy1 = bracket.cy1;
+                  cx2 = bracket.cx2;
+                  cy2 = bracket.cy2;
+                  orientation = bracket.orientation;
+                  degree = bracket.degree;
+                  return *this;            
+            };
+
+            Bracket(const Bracket &that) {
+                  *this = that;
+            };
+
             Bracket(const pair<int, int> p1, const pair<int, int> p2, Image img): 
                   x1(p1.first), y1(p1.second), x2(p2.first), y2(p2.second) 
             { 
@@ -180,8 +204,7 @@ class Bracket {
                               else
                                     break;
                         }
-                        cx2 = (cx1 - width - h_threshold);
-                        cy2 = prev_y;
+                        cx2 = (cx1 - width - h_threshold); cy2 = prev_y;
                         /*
                         for(int y = tly; y < bry; ++y)
                               if(ColorGray(img.pixelColor(tlx - 1, y)).shade() < 1.0){
@@ -238,6 +261,10 @@ class Bracket {
                   img.draw(DrawableLine((double)cx1, (double)cy1, (double)cx2, (double)cy2));
             };
 
+            void draw_br(Image &img) {
+                  img.pixelColor(brx, bry, "blue");
+            };
+
             bool intersects(const bond_t &bond, const vector<atom_t> &atoms){
                   double ax1 = atoms[bond.a].x;
                   double ay1 = atoms[bond.a].y;
@@ -251,27 +278,27 @@ class Bracket {
 
             char get_orientation() const {
                   return orientation;
-            }
+            };
 
             void set_degree(string degree) {
                   this->degree = degree;
-            }
+            };
 
             string get_degree() {
                   return this->degree;
-            }
+            };
 
-            int get_bottom_right_x() {
+            int get_bottom_right_x() const {
                   return this->brx;
-            }
+            };
 
-            int get_bottom_right_y() {
+            int get_bottom_right_y() const {
                   return this->bry;
-            }
+            };
 
             int get_height() {
                   return this->height;
-            }
+            };
 
       private:
             int x1, x2, y1, y2, width, height, tlx, tly, brx, bry, cx1, cy1, cx2, cy2;

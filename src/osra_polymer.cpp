@@ -35,6 +35,7 @@ void debug_log(string debug_log_name, double ave_bond_length, const vector<atom_
 }
 
 void edit_smiles(string &s) {
+      // This function is depricated, SMILES should be handled differently
       string tmp = s;
       vector<string> pieces;
       unsigned begin = 0;
@@ -121,22 +122,21 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
             cout << degree->first << endl;
       }
       */
-      // Right now it just takes the first degree that it could be associated with
-      if (!degrees.empty()) {
-            for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer.brackets.begin(); bracket != polymer.brackets.end(); ++bracket) {
-                  double brx = (double)bracket->second.get_bottom_right_x();
-                  double bry = (double)bracket->second.get_bottom_right_y();
-                  double b_dis = sqrt((brx * brx) + (bry * bry));
-                  double threshold = (double)bracket->second.get_height();
-                  for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++degree) {
-                        if (fabs(b_dis - degree->second) < threshold) {
-                              bracket->first.set_degree(degree->first);
-                              bracket->second.set_degree(degree->first);
-                        }
+      for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer.brackets.begin(); bracket != polymer.brackets.end(); ++bracket) {
+            bracket->first.set_degree("n");
+            bracket->second.set_degree("n");
+            double brx = (double)bracket->second.get_bottom_right_x();
+            double bry = (double)bracket->second.get_bottom_right_y();
+            double b_dis = sqrt((brx * brx) + (bry * bry));
+            double threshold = (double)bracket->second.get_height();
+            int i = 0;
+            for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++i, ++degree) {
+                  if (fabs(b_dis - degree->second) < threshold) {
+                        bracket->first.set_degree(degree->first);
+                        bracket->second.set_degree(degree->first);
                   }
             }
       }
-
 }
 
 void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vector<Bracket> &bracketboxes) {
@@ -148,15 +148,10 @@ void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vecto
                   for (int i = 0; i < bracketboxes.size(); i += 2) {
                         bool bracket0 = bracketboxes[i  ].intersects(*bond, atoms); // Check if the bonds intersects either bracket
                         bool bracket1 = bracketboxes[i+1].intersects(*bond, atoms);
-                        //                  bool bracket0 = bracketboxes[0].intersects(*bond, atoms); // Check if the bonds intersects either bracket
-                        //                  bool bracket1 = bracketboxes[1].intersects(*bond, atoms);
                         if (bracket0 || bracket1) {
                               bond->split = true;
-                              // If the bond is split copy the corresponding orientation to the bond for later use
-                              //if (bond->split) {
                               bond->bracket_orientation = (bracket0) ? bracketboxes[i].get_orientation() : bracketboxes[i+1].get_orientation();
                         }
-                        //bond->bracket_orientation = (bracket0) ? bracketboxes[0].get_orientation() : bracketboxes[1].get_orientation();
                   }
             }
 }
@@ -171,9 +166,9 @@ void pair_brackets(Polymer &polymer, const vector<Bracket> &brackets) {
             }
             if (bracket->get_orientation() == 'l') {
                   polymer.set_polymer();
-                  polymer.brackets.push_back(pair<Bracket, Bracket>(Bracket(), Bracket()));
+                  polymer.brackets.push_back(make_pair(Bracket(), Bracket()));
                   polymer.brackets.back().first = *bracket;
-                  ++i;
+                  i = polymer.brackets.size();
             } else {
                   --i;
                   polymer.brackets[i].second = *bracket;

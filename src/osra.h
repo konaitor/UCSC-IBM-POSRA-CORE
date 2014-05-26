@@ -48,6 +48,9 @@ atom_s(double xx=0, double yy=0, const potrace_path_t* p=NULL) :
   // string: label
   //    atomic label
   string label;
+  // string: degree
+  //    For psuedo atom repeat unit boundary: represents the degree associated to repeat unit
+  string degree;
   // int: n
   //    counter of created OBAtom objects in <create_molecule()>
   int n;
