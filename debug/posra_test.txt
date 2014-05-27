@@ -37,4 +37,4 @@ images/block_copolymer_C.gif|C[Lv:m]CCCCOC(=O)[Te:n;m]CCO[Po:n]C
 images/iso_pentane.gif|CCC(C)C
 images/iso_pentane_H.gif|CCC(C)C
 images/patent1.gif|OC(=O)C(CCCCOCCCCC(C(=O)O)(C)C)(C)C
-#images/stuff.jpg|
+images/block_copolymer_D.gif|C[Te:2000;n]CCCCOC(=O)[Te:n;m]CCO[Te:m;2000]C

@@ -131,9 +131,10 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
             double brx = (double)bracket->second.get_bottom_right_x();
             double bry = (double)bracket->second.get_bottom_right_y();
             double b_dis = sqrt((brx * brx) + (bry * bry));
-            double threshold = (double)bracket->second.get_height();
+            double threshold = (double)bracket->second.get_height() * 1.5;
             int i = 0;
             for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++i, ++degree) {
+                  //cout << degree->first << " " << fabs(b_dis - degree->second)  << " " << threshold << endl;
                   if (fabs(b_dis - degree->second) < threshold) {
                         bracket->first.set_degree(degree->first);
                         bracket->second.set_degree(degree->first);
@@ -158,23 +159,23 @@ void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vecto
 }
 
 void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, Polymer &polymer) {
-  if (!polymer.is_polymer()) return;
+      if (!polymer.is_polymer()) return;
 
-  // Iterate through all of the bonds checking to see which ones intersect a detected Bracket
-  for (vector<bond_t>::iterator bond = bonds.begin(); bond != bonds.end(); ++bond) {
-    if (bond->exists) {
-      for (int i = 0; i < polymer.brackets.size(); i++) {
-        pair<Bracket, Bracket> bpair = polymer.brackets[i];
-        bool bracket0 = bpair.first.intersects(*bond, atoms); // Check if the bonds intersects either bracket
-        bool bracket1 = bpair.second.intersects(*bond, atoms);
-        if (bracket0 || bracket1) {
-          bond->split++;
-          bond->degree.push_back(((bracket0) ? bpair.first : bpair.second).get_degree());
-          bond->bracket_orientation.push_back(((bracket0) ? bpair.first : bpair.second).get_orientation());
-        }
+      // Iterate through all of the bonds checking to see which ones intersect a detected Bracket
+      for (vector<bond_t>::iterator bond = bonds.begin(); bond != bonds.end(); ++bond) {
+            if (bond->exists) {
+                  for (int i = 0; i < polymer.brackets.size(); i++) {
+                        pair<Bracket, Bracket> bpair = polymer.brackets[i];
+                        bool bracket0 = bpair.first.intersects(*bond, atoms); // Check if the bonds intersects either bracket
+                        bool bracket1 = bpair.second.intersects(*bond, atoms);
+                        if (bracket0 || bracket1) {
+                              bond->split++;
+                              bond->degree.push_back(((bracket0) ? bpair.first : bpair.second).get_degree());
+                              bond->bracket_orientation.push_back(((bracket0) ? bpair.first : bpair.second).get_orientation());
+                        }
+                  }
+            }
       }
-    }
-  }
 }
 
 void pair_brackets(Polymer &polymer, const vector<Bracket> &brackets) {
