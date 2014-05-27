@@ -131,11 +131,12 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
             double brx = (double)bracket->second.get_bottom_right_x();
             double bry = (double)bracket->second.get_bottom_right_y();
             double b_dis = sqrt((brx * brx) + (bry * bry));
-            double threshold = (double)bracket->second.get_height() * 1.5;
+            double threshold = (double)bracket->second.get_height();
             int i = 0;
             for (vector<pair<string, double> >::iterator degree = degrees.begin(); degree != degrees.end(); ++i, ++degree) {
-                  //cout << degree->first << " " << fabs(b_dis - degree->second)  << " " << threshold << endl;
-                  if (fabs(b_dis - degree->second) < threshold) {
+                  double distance = degree->second - b_dis;
+                  if (distance < threshold && distance > 0) {
+                  //cout << degree->first << " " << brx << " " << bry << " " << fabs(b_dis - degree->second)  << " " << threshold << endl;
                         bracket->first.set_degree(degree->first);
                         bracket->second.set_degree(degree->first);
                   }
@@ -373,18 +374,13 @@ void find_brackets(Image &img, string debug_name, vector<Bracket> &bracketboxes)
       vector<pair<pair<int, int>,pair<int, int> > > bracketpoints;
       // Find endpoints in the image
       find_endpoints(img, debug_name, endpoints, img.columns(), img.rows(), bracketpoints);
-      //if(bracketpoints.size() != 2) return;
       // Iterate over endpoints and convert them into Brackets
       for(vector<pair<pair<int, int>, pair<int, int> > >::iterator itor = bracketpoints.begin(); itor != bracketpoints.end(); ++itor)
             bracketboxes.push_back(Bracket(itor->first, itor->second, img)); 
 
       // Remove the brackets from the image entirely
-      //bracketboxes[0].remove_brackets(img);
-      //bracketboxes[1].remove_brackets(img);
-      for (int i = 0; i < bracketboxes.size(); i++) {
+      for (int i = 0; i < bracketboxes.size(); i++)
             bracketboxes[i].remove_brackets(img);
-      }
-
 }
 
 void plot_points(Image &img, const vector<point> &points) {
