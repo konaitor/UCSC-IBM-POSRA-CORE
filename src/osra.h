@@ -79,7 +79,7 @@ typedef struct atom_s atom_t;
 struct bond_s
 {
 bond_s(int i=0, int j=0, const potrace_path_t* p=NULL) : 
-  a(i),b(j),curve(p),type(1),exists(true),hash(false),wedge(false),up(false),down(false),Small(false),arom(false),split(false),conjoined(false) {}
+  a(i),b(j),curve(p),type(1),exists(true),hash(false),wedge(false),up(false),down(false),Small(false),arom(false),split(0),conjoined(false) {}
   // ints: a, b, type
   //    starting atom, ending atom, bond type (1=single, 2=double, 3=triple)
   int a, b, type;
@@ -96,9 +96,10 @@ bond_s(int i=0, int j=0, const potrace_path_t* p=NULL) :
   bool Small;
   bool arom;
   //If a bracket cuts the bond
-  bool split;
+  int split;
   //The orientation of the bracket that bond splits
-  char bracket_orientation;
+  vector<char> bracket_orientation;
+  vector<string> degree;
   // bool: conjoined
   //    true for a double bond which is joined at one end on the image
   bool conjoined;

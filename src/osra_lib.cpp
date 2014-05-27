@@ -984,11 +984,25 @@ int osra_process_image(
                               int bond_max_type = 0;
                               int real_bonds = count_bonds(bond, n_bond,bond_max_type);
 
+                              /*
                               //nick_dev begin
-                              find_intersection(bond,atom,bracketboxes);
+                              find_intersection(bond, atom, bracketboxes);
                               pair_brackets(polymer.back(), bracketboxes);
                               split_atom(bond, atom, n_atom, n_bond);
                               find_degree(polymer.back(), letters, label);
+                              plot_all(orig_box, debug_name, k, "end", atom, bond, letters, label);
+                              stringstream count;
+                              count << res_iter;
+                              debug_log(debug_name + "_posra_1_" + count.str() + ".log", avg_bond_length, atom, bond); 
+                              //nick_dev end
+                              */
+                              //nick_dev begin
+                              pair_brackets(polymer.back(), bracketboxes);
+                              find_degree(polymer.back(), letters, label);
+                              //find_intersection(bond,atom,bracketboxes);
+                              find_intersection(bond, atom, polymer.back());
+                              split_atom(bond, atom, n_atom, n_bond);
+
                               plot_all(orig_box, debug_name, k, "end", atom, bond, letters, label);
                               stringstream count;
                               count << res_iter;

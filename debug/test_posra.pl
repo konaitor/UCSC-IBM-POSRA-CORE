@@ -29,8 +29,8 @@ sub test {
       my $i = ((scalar @output) < 2) ? 0 : 1;
       my $fail = ((scalar @output) > 0) ? 0 : 1;
       chomp($output[0]);
-      chomp($io[(scalar @io) - 1]);
-      if (($output[0] eq $io[(scalar @io) - 1]) and !$fail) {
+      chomp($io[1]);
+      if (($output[0] eq $io[1]) and !$fail) {
             print "\t[  \e[32mOK\e[0m  ]\n";
             ++$res;
       } else {

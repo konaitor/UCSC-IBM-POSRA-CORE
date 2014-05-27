@@ -8,6 +8,7 @@ extern "C" {
 #include <math.h> // fabs(double)
 #include <list> // sdt::list
 #include <vector> // std::vector
+#include <stack>
 #include <map>
 #include <set>
 #include <algorithm> // std::sort, std::min(double, double), std::max(double, double)
@@ -330,7 +331,8 @@ void  find_degree(Polymer &, const vector<letters_t>, const vector<label_t>);
   *  is marked to be split is a boundary between a repeat unit and an end group
   *  and these need to be distinguished.
 */
-void  find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vector<Bracket> &bracketboxes);
+void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vector<Bracket> &bracketboxes);
+void  find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, Polymer &polymer);
 
 /** Pair Brackets
   *  After all the brackets have been found, and after OSRA has done most of the

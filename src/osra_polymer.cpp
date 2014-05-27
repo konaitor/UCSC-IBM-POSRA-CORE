@@ -62,7 +62,7 @@ void edit_smiles(string &s) {
 void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vector<label_t> labels) {
       // Possible degree characters
       char possible_letters[] = "nmpxyNMPXY";
-      // Somtimes OCRAD misinterprets a number for a character i.e. 50 -> 5O
+      // Somtimes OCRAD misinterprets a number for a character i.e. '50' -> '5O' or even 'O5O'
       map<char, char> misread_numbers;
       misread_numbers['O'] = '0';
       misread_numbers['o'] = '0';
@@ -73,11 +73,11 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
       vector<pair<string, double> > degrees;
       // First we check for strings, i.e. "50"
       for (vector<label_t>::const_iterator label = labels.begin(); label != labels.end(); ++label) {
-            int degree;
-            istringstream iss(label->a);
-            iss >> degree;
-            // Check if it's a valid number
-            if (degree > 0) {
+            //int degree;
+            //istringstream iss(label->a);
+            //iss >> degree;
+            //// Check if it's a valid number
+            //if (degree > 0) {
                   string s;
                   bool not_number = false;
                   for (string::const_iterator itor = label->a.begin(); itor != label->a.end(); ++itor) {
@@ -99,10 +99,13 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
                         }
                   }
                   if (!not_number) {
+                        char* lbl = (char*) s.c_str();
+                        while (lbl[0] == '0') lbl++; // could be 050, e.g. for images/PolyTMC50.gif, strip away leading 0's
+                        //cout << "label " << label->a << ", s " << lbl << endl;
                         double dis = sqrt((label->x1 * label->x1) + (label->y1 * label->y1));
-                        degrees.push_back(make_pair(s, dis));
+                        degrees.push_back(make_pair(lbl, dis));
                   }
-            }
+            //}
       }
       // Next we check for characters, i.e. 'n'
       for (vector<letters_t>::const_iterator letter = letters.begin(); letter != letters.end(); ++letter) {
@@ -140,41 +143,61 @@ void  find_degree(Polymer &polymer, const vector<letters_t> letters, const vecto
 }
 
 void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, vector<Bracket> &bracketboxes) {
-      // As of now it only works on a single pair of brackets
-      //if (bracketboxes.size() != 2) return;
       // Iterate through all of the bonds checking to see which ones intersect a detected Bracket
       for (vector<bond_t>::iterator bond = bonds.begin(); bond != bonds.end(); ++bond)
             if (bond->exists) {
-                  for (int i = 0; i < bracketboxes.size(); i += 2) {
+                  for (int i = 0; i < bracketboxes.size(); ++i) {
                         bool bracket0 = bracketboxes[i  ].intersects(*bond, atoms); // Check if the bonds intersects either bracket
                         bool bracket1 = bracketboxes[i+1].intersects(*bond, atoms);
                         if (bracket0 || bracket1) {
-                              bond->split = true;
-                              bond->bracket_orientation = (bracket0) ? bracketboxes[i].get_orientation() : bracketboxes[i+1].get_orientation();
+                              bond->split++;
+                              //bond->bracket_orientation = (bracket0) ? bracketboxes[i].get_orientation() : bracketboxes[i+1].get_orientation();
                         }
                   }
             }
 }
 
+void find_intersection(vector<bond_t> &bonds, const vector<atom_t> &atoms, Polymer &polymer) {
+  if (!polymer.is_polymer()) return;
+
+  // Iterate through all of the bonds checking to see which ones intersect a detected Bracket
+  for (vector<bond_t>::iterator bond = bonds.begin(); bond != bonds.end(); ++bond) {
+    if (bond->exists) {
+      for (int i = 0; i < polymer.brackets.size(); i++) {
+        pair<Bracket, Bracket> bpair = polymer.brackets[i];
+        bool bracket0 = bpair.first.intersects(*bond, atoms); // Check if the bonds intersects either bracket
+        bool bracket1 = bpair.second.intersects(*bond, atoms);
+        if (bracket0 || bracket1) {
+          bond->split++;
+          bond->degree.push_back(((bracket0) ? bpair.first : bpair.second).get_degree());
+          bond->bracket_orientation.push_back(((bracket0) ? bpair.first : bpair.second).get_orientation());
+        }
+      }
+    }
+  }
+}
+
 void pair_brackets(Polymer &polymer, const vector<Bracket> &brackets) {
       // i: Keeps track of bracket pairs, for every left there must be a right!
       int i = 0;
+      stack<int> bracket_stack;
       for (vector<Bracket>::const_iterator bracket = brackets.begin(); bracket != brackets.end(); ++bracket) {
-            if (i < 0) {
-                  cerr << "Unmatched bracket" << endl;
-                  break;
-            }
             if (bracket->get_orientation() == 'l') {
+                  bracket_stack.push(i++);
                   polymer.set_polymer();
                   polymer.brackets.push_back(make_pair(Bracket(), Bracket()));
                   polymer.brackets.back().first = *bracket;
-                  i = polymer.brackets.size();
             } else {
-                  --i;
-                  polymer.brackets[i].second = *bracket;
+                  if (bracket_stack.empty()) {
+                        cerr << "Unmatched bracket" << endl;
+                        break;
+                  }
+                  int b_id = bracket_stack.top();
+                  polymer.brackets[b_id].second = *bracket;
+                  bracket_stack.pop();
             }
       }
-      if (i > 0) {
+      if (!bracket_stack.empty()) {
             cerr << "Unmatched bracket" << endl;
       }
 }
@@ -190,8 +213,21 @@ void  split_atom(vector<bond_t> &bonds, vector<atom_t> &atoms, int &n_atom, int 
                   atom_t pseudo_atom(x, y, bond->curve); // Create a new atom
                   pseudo_atom.exists = true;
                   // Assign Polonium to left oriented brackets and Livermorium to right
-                  pseudo_atom.label = (bond->bracket_orientation == 'l') ? "Po" : "Lv";
-                  pseudo_atom.anum  = (bond->bracket_orientation == 'l') ? 84 : 116;
+                  char orient = bond->bracket_orientation[0];
+
+                  stringstream degree; degree << ":" << bond->degree[0];
+                  if (bond->split == 1) { // Assign Polonium to left oriented brackets and Livermorium to right
+                    pseudo_atom.label = (orient == 'l') ? "Po" : "Lv";
+                    pseudo_atom.anum  = (orient == 'l') ? 84 : 116;
+                  } else {                // Assign Tellurium to placeholder atom for bonds that are split twice
+                    pseudo_atom.label = "Te";
+                    pseudo_atom.anum  = 52;
+                    degree << ";" << bond->degree[1];
+                  }
+                  pseudo_atom.degree = degree.str();
+
+                  //cout << "atom " << pseudo_atom.label << ", degree=" << pseudo_atom.degree << ", orient=" << orient << endl;
+
                   atoms.push_back(pseudo_atom);
                   // Create a new bond
                   bond_t newbond(atoms.size()-1, bond->b, bond->curve);

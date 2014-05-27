@@ -133,8 +133,9 @@ bool create_atom(OBMol &mol, atom_t &atom, double scale, const map<string, strin
 	      if (atom.anum == 0)
 		{
 		  AliasData* ad = new AliasData();
+		  new_atom->SetType(atom.label);
 		  ad->SetAlias(atom.label);
-		  ad->SetOrigin(external); 
+		  ad->SetOrigin(external);
 		  new_atom->SetData(ad);
 		}
             }
@@ -195,10 +196,19 @@ bool create_atom(OBMol &mol, atom_t &atom, double scale, const map<string, strin
   if (atom.anum == 0)
     {
       AliasData* ad = new AliasData();
+      a->SetType(atom.label);
       ad->SetAlias(atom.label);
-      ad->SetOrigin(external); 
+      ad->SetOrigin(external);
       a->SetData(ad);
     }
+
+  if (atom.anum == 52 || atom.anum == 84 || atom.anum == 116) { // place holder atom; stow away the repeat unit's degree
+    OBPairData* degree = new OBPairData;
+    degree->SetAttribute("Degree");
+    degree->SetValue(atom.degree);
+    a->SetData(degree);
+    if (verbose) cout << "setting OBAtom degree " << atom.degree << " for atom " << atom.anum << endl;
+  }
 
   return false;
 }
@@ -653,26 +663,33 @@ const string get_formatted_structure(vector<atom_t> &atom, const vector<bond_t> 
     if (format == "smi" || format == "can") { // ensure that R groups' subscripts (if any) are honored in resulting SMILES
       OBAtomIterator atom_iter;
       for (OBAtom* a = mol.BeginAtom(atom_iter); a; a = mol.NextAtom(atom_iter)) {
-        if (a->GetAtomicNum() == 0) {
+        ///cout << "posra: type " << a->GetType() << endl;
+        if (a->GetAtomicNum() == 0) { // R-group or X or *
           AliasData* ad = (AliasData*) a->GetData("UserLabel");
           if (ad == NULL) continue;
           string alias = ad->GetAlias();
-          if (alias[0] == 'R' && (alias[1] == '\'' || isdigit(alias[1]))) {
-            unsigned int n = 1;
-            if (alias[1] == '\'') {
-              while (n < alias.size()-1 && alias[n] == alias[n+1]) n++;
-            } else {
-              n = atoi(alias.c_str()+1);
-            }
+          //cout << "alias=" << alias << ", type=" << a->GetType() << endl;
+          if (alias[0] == 'X') { // X-substituent
+            a->SetType("X");
+          } else if (alias[0] == 'R') { // R-group
+            a->SetType("R");
+            if (alias[1] == '\'' || isdigit(alias[1])) { // subscripted R-group or R', R'',...
+              unsigned int n = 1;
+              if (alias[1] == '\'') {
+                while (n < alias.size()-1 && alias[n] == alias[n+1]) n++;
+              } else {
+                n = atoi(alias.c_str()+1);
+              }
 
-            OBAtomClassData* pac = static_cast<OBAtomClassData*>(mol.GetData("Atom Class"));
-            if (!pac) {
-              pac = new OBAtomClassData;
-              mol.SetData(pac);
+              OBAtomClassData* pac = static_cast<OBAtomClassData*>(mol.GetData("Atom Class"));
+              if (!pac) {
+                pac = new OBAtomClassData;
+                mol.SetData(pac);
+              }
+              if (verbose) cout << "Setting atom class for alias " << alias << " " << a->GetIdx() << " " << n << endl;
+              pac->Add(a->GetIdx(), n);
             }
-            if (verbose) cout << "Setting atom class for alias " << alias << " " << a->GetIdx() << " " << n << endl;
-            pac->Add(a->GetIdx(), n);
-    	  }
+    	    }
         }
       }
     }
