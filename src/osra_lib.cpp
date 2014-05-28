@@ -568,6 +568,10 @@ int osra_process_image(
       // return global_init_state;
 
       //nick_dev
+
+#ifdef OSRA_LIB
+      string input_file = "libcache";
+#endif
       string debug_name = get_debug_path(input_file);
 
       std::transform(output_format.begin(), output_format.end(), output_format.begin(), ::tolower);
