@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="Assembly Source File">
+
+</language>
+<language name="C++ Source File">
+<includepath>C:\CygWin\lib\gcc\i686-pc-cygwin\4.8.3\include\c++</includepath>
+<includepath>C:\CygWin\lib\gcc\i686-pc-cygwin\4.8.3\include\c++\backward</includepath>
+<includepath>C:\CygWin\lib\gcc\i686-pc-cygwin\4.8.3\include-fixed</includepath>
+<includepath>C:\CygWin\lib\gcc\i686-pc-cygwin\4.8.3\include\c++\i686-pc-cygwin</includepath>
+<includepath>C:\CygWin\lib\gcc\i686-pc-cygwin\4.8.3\include</includepath>
+<includepath>C:\CygWin\usr\include</includepath>
+<includepath>C:\CygWin\usr\local\include</includepath>
+<includepath>C:\CygWin\usr\include\openbabel-2.0\</includepath>
+<includepath>C:\Cygwin\usr\include\GraphicsMagick</includepath>
+<includepath>C:\CygWin\usr\local\include\gocr</includepath>
+<includepath>C:\Cygwin\usr\include\netpbm</includepath>
+
+</language>
+<language name="C Source File">
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="Assembly Source File">
+
+</language>
+<language name="C++ Source File">
+
+</language>
+<language name="C Source File">
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+</cdtprojectproperties>
