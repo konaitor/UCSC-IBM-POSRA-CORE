@@ -12,10 +12,11 @@
 <includepath>C:\CygWin\lib\gcc\i686-pc-cygwin\4.8.3\include</includepath>
 <includepath>C:\CygWin\usr\include</includepath>
 <includepath>C:\CygWin\usr\local\include</includepath>
-<includepath>C:\CygWin\usr\include\openbabel-2.0\</includepath>
 <includepath>C:\Cygwin\usr\include\GraphicsMagick</includepath>
 <includepath>C:\CygWin\usr\local\include\gocr</includepath>
+<includepath>C:\Cygwin\usr\local\include\tesseract</includepath>
 <includepath>C:\Cygwin\usr\include\netpbm</includepath>
+<includepath>C:\CygWin\usr\include\openbabel-2.0</includepath>
 
 </language>
 <language name="C Source File">
