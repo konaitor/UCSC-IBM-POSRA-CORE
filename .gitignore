@@ -21,3 +21,7 @@
 *.app
 *.log
 *.status
+*.lnk
+
+# test output directories
+debug/*/
