@@ -134,6 +134,7 @@ class Bracket {
                   x1(p1.first), y1(p1.second), x2(p2.first), y2(p2.second) 
             { 
                   height = abs(y1 - y2);
+                  degree_distance = (double)height;
                   tly = (y1 < y2) ? y1 : y2;
                   bry = tly + height + 1;
                   int threshold = height / 2;
@@ -147,6 +148,7 @@ class Bracket {
                   int r_cy2 = 0;
                   bool found = false;
                   float color_threshold = 0.6;
+                  // TODO: Make Box extend to cover bracket based on resolution!
                   for(int y = tly; y < bry; ++y){
                         //Record bond location
                         //TODO: height / 4 ???
@@ -262,10 +264,6 @@ class Bracket {
                   img.draw(DrawableLine((double)cx1, (double)cy1, (double)cx2, (double)cy2));
             };
 
-            void draw_br(Image &img) {
-                  img.pixelColor(brx, bry, "blue");
-            };
-
             bool intersects(const bond_t &bond, const vector<atom_t> &atoms){
                   double ax1 = atoms[bond.a].x;
                   double ay1 = atoms[bond.a].y;
@@ -301,10 +299,31 @@ class Bracket {
                   return this->height;
             };
 
+            void set_degree_distance(double dis) {
+                  this->degree_distance = dis;
+            };
+
+            double get_degree_distance() {
+                  return this->degree_distance;
+            };
+
+            void rotate_bracket() {
+                  // TODO
+                  // Flip all x and y's
+                  // swap (width, height)
+                  // swap (x1, y1)
+                  // swap (x2, y2)
+                  // swap (tlx, tly)
+                  // swap (brx, bry)
+                  // swap (cx1, cy1)
+                  // swap (cx2, cy2)
+            };
+
       private:
             int x1, x2, y1, y2, width, height, tlx, tly, brx, bry, cx1, cy1, cx2, cy2;
             char orientation;
             string degree;
+            double degree_distance; // Initialized to height of bracket
 };
 
 string get_debug_path(string input_file);

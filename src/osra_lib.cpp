@@ -833,6 +833,12 @@ int osra_process_image(
                               vector<Bracket> bracketboxes;
                               find_brackets(orig_box, debug_name, bracketboxes);
                               orig_box.write(debug_name + "_orig_box_removed_pass_" + ss.str() + ".gif");
+                              //TODO: Rotate image and detect horizontal
+                              /* Psuedo
+                              orig_box.rotate(90); // 90 Degrees
+                              find_brackets(orig_box, debug_name, bracketboxes);  // Maybe extra option to say that it's rotated
+                              // See osra_polymer.h in the Bracket class, void rotate_bracket(), for rotating the bracket
+                              */
 
                               Image thick_box;
                               create_thick_box(orig_box,thick_box,width,height,resolution,working_resolution,box_scale,bgColor,THRESHOLD_BOND,res_iter,thick,jaggy);
@@ -991,7 +997,6 @@ int osra_process_image(
                               //nick_dev begin
                               pair_brackets(polymer.back(), bracketboxes);
                               find_degree(polymer.back(), letters, label);
-                              //find_intersection(bond,atom,bracketboxes);
                               find_intersection(bond, atom, polymer.back());
                               split_atom(bond, atom, n_atom, n_bond);
 

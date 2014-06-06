@@ -367,7 +367,6 @@ void verify_bracketpoints(vector<pair<pair<int, int>, pair<int, int> > > &bracke
             return;
       }
 }
-      
 
 void find_brackets(Image &img, string debug_name, vector<Bracket> &bracketboxes) { 
       vector<pair<int, int> > endpoints;
