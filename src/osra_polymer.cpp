@@ -336,7 +336,15 @@ void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &en
                             // If at least one of the middle pixels are non-white and both of the quarter
                             // pixels are white, then add pair as endpoint
                             if (intersects && non_white < 10 && qtr0.shade() == 1 && qtr1.shade() == 1 && qtr2.shade() == 1 && qtr3.shade() == 1) {                                 
-                                  bracketpoints.push_back(make_pair(endpoints.at(i), endpoints.at(j)));                                  
+                                  bool dup = false;
+                                  for (vector<pair<pair<int, int>, pair<int, int> > >::iterator itor = bracketpoints.begin(); itor!= bracketpoints.end(); ++itor) {
+                                      int i_lower = itor->first.first < itor->second.first ? itor->first.first : itor->second.first;
+                                      if (abs(i_lower - endpoints.at(lower_index).first) <= 3) {
+                                          dup = true;
+                                          break;
+                                      }
+                                  }
+                                  if (!dup) bracketpoints.push_back(make_pair(endpoints.at(i), endpoints.at(j)));                                  
                                   endpoints.erase(endpoints.begin() + (i > j ? i : j));
                                   endpoints.erase(endpoints.begin() + (i < j ? i : j));
                             }                                   
@@ -347,7 +355,7 @@ void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &en
           endpoints.clear();
           ++CURSOR_SIZE;
       }
-      verify_bracketpoints (bracketpoints);
+      if (bracketpoints.size() == 1) bracketpoints.clear();
       // Drawing the green line between endpoints for debugging
       for(vector<pair<pair<int, int>, pair<int, int> > >::iterator itor = bracketpoints.begin(); itor != bracketpoints.end(); ++itor) {
             int lower_index = itor->first.second < itor->second.second ? itor->first.second : itor->second.second;
@@ -358,14 +366,6 @@ void find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &en
             detect.pixelColor (itor->second.first, itor->second.second, "blue");
       }
       detect.write(debug_name + "_endpoints_detect.gif");
-}
-
-// TODO: Verify each bracket has reasonably positioned partner (mirror)
-void verify_bracketpoints(vector<pair<pair<int, int>, pair<int, int> > > &bracketpoints) {
-      if (bracketpoints.size() == 1) {
-            bracketpoints.clear();
-            return;
-      }
 }
 
 void find_brackets(Image &img, string debug_name, vector<Bracket> &bracketboxes) { 

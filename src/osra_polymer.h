@@ -380,12 +380,6 @@ void  split_atom(vector<bond_t> &bonds, vector<atom_t> &atoms, int &n_atom, int 
 */
 void  find_endpoints(Image detect, string debug_name, vector<pair<int, int> > &endpoints, int width, int height, vector<pair<pair<int, int>, pair<int, int> > > &bracketpoints);
 
-/** Verify Bracketpoints
-  *  Check each bracket for a valid partner using pixel coordinates of other detected
-  *  brackets.
-*/
-void verify_bracketpoints(vector<pair<pair<int, int>, pair<int, int> > > &bracketpoints);
-
 /** Find Brackets
   *  The main entry point from OSRA to POSRA.  Encapsulates many of the functions
   *  above.
