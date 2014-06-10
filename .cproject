@@ -37,6 +37,8 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Cygwin\usr\local\include\tesseract&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Cygwin\usr\include\netpbm&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\CygWin\usr\include\openbabel-2.0&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Projects\Java8\include\win32&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Projects\Java8\include&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1028008592" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 							</tool>
