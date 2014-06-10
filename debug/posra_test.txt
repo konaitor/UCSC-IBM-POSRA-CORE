@@ -2,8 +2,11 @@
 # Add to this file:
 #   path_to_image|CORRECT_SMILES_STRING
 images/MMA.jpg|COC(=O)C(=C)C
+images/MMAx.gif|CCOC(=O)C(/C=C(\C(=O)OC)/Br)(C)C
+images/MMAxx.gif|CCOC(=O)C(/C=C(\C(=O)OC)/Br)(C)C
 images/Methylmethacrylate.gif|COC(=O)C(=C)C
 images/PEG.gif|CO[Po:n]|CCO[Lv:n][H]
+images/PEG.png|CO[Po:n]|CCO[Lv:n][H]
 images/EG.gif|OCCO
 images/PMMA.gif|C[Po:n]CC(C)(C(=O)COC)[Lv:n]C
 images/PolyBLA_NCASQ.gif|CCCCCCC[Po:n]NC(=O)C(CCC(=O)OCc1ccccc1)[Lv:n]N
@@ -34,7 +37,7 @@ images/TMC.gif|O=C1OCCCO1
 images/block_copolymer_A.gif|C[Po:n]OCC[Lv:n]O[Po:m]C(=O)OCCCO[Lv:m]C(=O)C
 images/block_copolymer_B.gif|C[Po:m]CC(c1ccccc1)[Te:m;n]CC(C(=O)OC)([Lv:n]C)C
 images/block_copolymer_C.gif|C[Lv:m]CCCCOC(=O)[Te:n;m]CCO[Po:n]C
+images/block_copolymer_D.gif|C[Te:2000;m]CCCCOC(=O)[Te:n;m]CCO[Te:2000;n]C
 images/iso_pentane.gif|CCC(C)C
 images/iso_pentane_H.gif|CCC(C)C
 images/patent1.gif|OC(=O)C(CCCCOCCCCC(C(=O)O)(C)C)(C)C
-images/block_copolymer_D.gif|C[Te:2000;n]CCCCOC(=O)[Te:n;m]CCO[Te:m;2000]C
