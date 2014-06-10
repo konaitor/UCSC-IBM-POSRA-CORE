@@ -42,7 +42,7 @@ NATURALDOCS		:=
 XSLTPROC		:= 
 TESSERACT_LIB		:= 
 OSRA_LIB		:= 
-OSRA_JAVA		:= 1
+OSRA_JAVA		:= 
 
 # Notes: see "configure --enable-static-linking" to enable static linking; use "configure --enable-profiling" to include extra debug info.
 
