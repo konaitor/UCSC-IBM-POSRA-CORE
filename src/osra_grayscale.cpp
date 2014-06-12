@@ -152,7 +152,7 @@ Image adaptive_otsu(const Image &image, int window)
   return(result);
 }
 
-bool convert_to_gray(Image &image, bool invert, bool adaptive, bool verbose)
+bool convert_to_gray(Image &image, bool invert, bool adaptive, bool verbose, string debug_name)
 {
   int num_bins=50;
   int num_bins_rgb = 20;
@@ -266,12 +266,12 @@ bool convert_to_gray(Image &image, bool invert, bool adaptive, bool verbose)
       image.despeckle();
       if (invert)
         {
-          image.adaptiveThreshold(window,window,7);
+          image.adaptiveThreshold(window,window,1000);
         }
       else
         {
           image.negate();
-          image.adaptiveThreshold(window,window,7);
+          image.adaptiveThreshold(window,window,1000);
           image.negate();
         }
     }

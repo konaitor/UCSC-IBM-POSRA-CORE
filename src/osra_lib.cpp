@@ -10,12 +10,12 @@ version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
 this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 St, Fifth Floor, Boston, MA 02110-1301, USA
- *****************************************************************************/
+*****************************************************************************/
 
 //nick_dev
 #include <string.h>
@@ -69,14 +69,14 @@ using namespace OpenBabel;
 using namespace std;
 using namespace Magick;
 
-void set_select_resolution(vector<int>  &select_resolution, int input_resolution)
+void set_select_resolution(vector<int> &select_resolution, int input_resolution)
 {
       if (input_resolution == 0)
       {
             select_resolution[0] = 72;
             select_resolution[1] = 150;
             select_resolution[2] = 300;
-            select_resolution[3] = 300;  // No thinning
+            select_resolution[3] = 300; // No thinning
             select_resolution[4] = 500;
       }
 }
@@ -136,7 +136,7 @@ void create_thick_box(Image &orig_box,Image &thick_box,int &width,int &height,in
                   noise_factor(orig_box, width, height, bgColor, THRESHOLD_BOND, resolution, max_hist, nf45);
 
             //if (max_hist < 5) thick = false;
-            if (res_iter == NUM_RESOLUTIONS-2)  // no thinning
+            if (res_iter == NUM_RESOLUTIONS-2) // no thinning
             {
                   working_resolution = 300;
                   thick_box = orig_box;
@@ -175,7 +175,7 @@ void create_thick_box(Image &orig_box,Image &thick_box,int &width,int &height,in
                         width = thick_box.columns();
                         height = thick_box.rows();
                         thick = false;
-                        nf = noise_factor(orig_box, width, height, bgColor, THRESHOLD_BOND, resolution,  max_hist, nf45);
+                        nf = noise_factor(orig_box, width, height, bgColor, THRESHOLD_BOND, resolution, max_hist, nf45);
                   }
             }
             if (jaggy)
@@ -200,15 +200,15 @@ void create_thick_box(Image &orig_box,Image &thick_box,int &width,int &height,in
                   thick_box = orig_box;
             }
             /*else if (nf45 > 0.9 && nf45 < 1.2 && max_hist == 3)
-              {
-            //orig_box = anisotropic_smoothing(thick_box, width, height, 60, 0.3, 0.6, 4., 2.);
-            orig_box.scale("50%");
-            thick_box = orig_box;
-            //working_resolution = 150;
-            width = thick_box.columns();
-            height = thick_box.rows();
-            //thick = false;
-            }*/
+{
+//orig_box = anisotropic_smoothing(thick_box, width, height, 60, 0.3, 0.6, 4., 2.);
+orig_box.scale("50%");
+thick_box = orig_box;
+//working_resolution = 150;
+width = thick_box.columns();
+height = thick_box.rows();
+//thick = false;
+}*/
             else
                   thick_box = orig_box;
       }
@@ -230,10 +230,10 @@ void create_thick_box(Image &orig_box,Image &thick_box,int &width,int &height,in
             thick_box = orig_box;
 }
 
-potrace_state_t * const  raster_to_vector(Image &box,ColorGray bgColor, double THRESHOLD_BOND,int width,int height,int working_resolution)
+potrace_state_t * const raster_to_vector(Image &box,ColorGray bgColor, double THRESHOLD_BOND,int width,int height,int working_resolution)
 {
       potrace_param_t * const param = potrace_param_default();
-      param->alphamax = 5e-324; // this has been changed in potrace-1.11 
+      param->alphamax = 5e-324; // this has been changed in potrace-1.11
       //param->turnpolicy = POTRACE_TURNPOLICY_MINORITY;
       param->turdsize = 0;
 
@@ -301,21 +301,21 @@ void rotate_coordinate_box(box_t &coordinate_box,double rotation,int width,int h
 void split_fragments_and_assemble_structure_record(
             Polymer &polymer,
             vector<atom_t> &atom,
-            int n_atom, 
-            vector<bond_t>  &bond, 
-            int n_bond, 
+            int n_atom,
+            vector<bond_t> &bond,
+            int n_bond,
             const vector<box_t> &boxes,
             int l,int k,
             int resolution,
-            int res_iter, 
+            int res_iter,
             const string &output_image_file_prefix,
             Image &image,
             Image &orig_box,
             int real_font_width,int real_font_height,
-            double thickness, 
+            double thickness,
             double avg_bond_length,
             const map<string, string> &superatom,
-            int real_atoms, int real_bonds, 
+            int real_atoms, int real_bonds,
             int bond_max_type,
             double box_scale, double page_scale, double rotation, int unpaper_dx, int unpaper_dy,
             string output_format,
@@ -430,9 +430,9 @@ void split_fragments_and_assemble_structure_record(
                                           show_page ? &page_number : NULL,
                                           show_coordinates ? &coordinate_box : NULL, superatom, n_letters, show_learning, resolution_iteration, verbose);
 
-                        //nick_dev  
+                        //nick_dev
                         //edit_smiles(structure);
-                        debug_log(debug_name + "_posra_2_" + count + ".log", avg_bond_length, atom, bond); 
+                        debug_log(debug_name + "_posra_2_" + count + ".log", avg_bond_length, atom, bond);
 
                         if (molecule_statistics.fragments > 0 && molecule_statistics.fragments < MAX_FRAGMENTS && molecule_statistics.num_atoms>MIN_A_COUNT && molecule_statistics.num_bonds>0)
                         {
@@ -474,7 +474,7 @@ void split_fragments_and_assemble_structure_record(
       }
 }
 
-int count_recognized_chars(vector<atom_t>  &atom, vector<bond_t>& bond)
+int count_recognized_chars(vector<atom_t> &atom, vector<bond_t>& bond)
 {
       string char_filter = "oOcCNHsSBMeEXYZRPp123456789AF";
       set<int> atoms;
@@ -585,7 +585,7 @@ int osra_process_image(
 
 #ifdef OSRA_LIB
       Blob blob(image_data, image_length);
-#endif 
+#endif
       try
       {
             Image image_typer;
@@ -713,9 +713,10 @@ int osra_process_image(
             }
 #endif
             image.modifyImage();
-            bool adaptive = convert_to_gray(image, invert, adaptive_option, verbose);
 
-
+            //image.write(debug_name + "Pre-convert-to-grey.gif");
+            bool adaptive = convert_to_gray(image, invert, adaptive_option, verbose, debug_name);
+            //image.write(debug_name + "Post-convert-to-grey.gif");
 
             vector<vector<string> > array_of_structures(num_resolutions);
             vector<vector<double> > array_of_avg_bonds(num_resolutions), array_of_ind_conf(num_resolutions);
@@ -804,6 +805,7 @@ int osra_process_image(
                                     && !boxes[k].c.empty() && ((boxes[k].x2 - boxes[k].x1) > 2 * max_font_width || (boxes[k].y2
                                                 - boxes[k].y1) > 2 * max_font_height))
                         {
+
                               int n_atom = 0, n_bond = 0, n_letters = 0, n_label = 0;
                               vector<atom_t> atom;
                               vector<bond_t> bond;
@@ -835,10 +837,10 @@ int osra_process_image(
                               orig_box.write(debug_name + "_orig_box_removed_pass_" + ss.str() + ".gif");
                               //TODO: Rotate image and detect horizontal
                               /* Psuedo
-                              orig_box.rotate(90); // 90 Degrees
-                              find_brackets(orig_box, debug_name, bracketboxes);  // Maybe extra option to say that it's rotated
-                              // See osra_polymer.h in the Bracket class, void rotate_bracket(), for rotating the bracket
-                              */
+orig_box.rotate(90); // 90 Degrees
+find_brackets(orig_box, debug_name, bracketboxes); // Maybe extra option to say that it's rotated
+// See osra_polymer.h in the Bracket class, void rotate_bracket(), for rotating the bracket
+*/
 
                               Image thick_box;
                               create_thick_box(orig_box,thick_box,width,height,resolution,working_resolution,box_scale,bgColor,THRESHOLD_BOND,res_iter,thick,jaggy);
@@ -852,7 +854,7 @@ int osra_process_image(
                               else
                                     box = thick_box;
 
-                              potrace_state_t * const  st = raster_to_vector(box,bgColor,THRESHOLD_BOND,width,height,working_resolution);
+                              potrace_state_t * const st = raster_to_vector(box,bgColor,THRESHOLD_BOND,width,height,working_resolution);
                               potrace_path_t const * const p = st->plist;
 
                               n_atom = find_atoms(p, atom, bond, &n_bond,width,height);
@@ -891,7 +893,7 @@ int osra_process_image(
                               remove_zero_bonds(bond, n_bond, atom);
 
                               n_bond = find_wavy_bonds(bond,n_bond,atom,avg_bond_length);
-                              //				if (ttt++ == 0)  debug_image(orig_box, atom, n_atom, bond, n_bond, "tmp.png");                
+                              // if (ttt++ == 0) debug_image(orig_box, atom, n_atom, bond, n_bond, "tmp.png");
                               n_letters = find_fused_chars(bond, n_bond, atom, letters, n_letters, real_font_height,
                                           real_font_width, 0, orig_box, bgColor, THRESHOLD_BOND, 3, verbose);
 
@@ -1003,7 +1005,7 @@ int osra_process_image(
                               plot_all(orig_box, debug_name, k, "end", atom, bond, letters, label);
                               stringstream count;
                               count << res_iter;
-                              debug_log(debug_name + "_posra_1_" + count.str() + ".log", avg_bond_length, atom, bond); 
+                              debug_log(debug_name + "_posra_1_" + count.str() + ".log", avg_bond_length, atom, bond);
                               //nick_dev end
 
                               if (verbose)
@@ -1024,7 +1026,6 @@ int osra_process_image(
                   boxes_per_res[res_iter] += total_boxes;
                   //dbg.write("debug.png");
             }
-
 
 #pragma omp critical
             {
@@ -1054,7 +1055,7 @@ int osra_process_image(
             }
 
 
-           // igor_dev 
+           // igor_dev
 
            FILE *debug_file = fopen((debug_name + "_posra_structure.log").c_str(), "w");
            vector<vector<string> >::iterator itor = array_of_structures.begin();
@@ -1089,7 +1090,7 @@ int osra_process_image(
             }
 
       if (!show_learning)
-            for (int l = 0; l < page; l++) 
+            for (int l = 0; l < page; l++)
             {
                   pages_of_structures[l] = array_of_structures_page[l][max_res];
                   if (!output_image_file_prefix.empty())
@@ -1106,9 +1107,9 @@ int osra_process_image(
       double best_bond = 0;
 
       //if (total_structure_count >= STRUCTURE_COUNT)
-      //  find_limits_on_avg_bond(best_bond, pages_of_avg_bonds, pages_of_ind_conf);
+      // find_limits_on_avg_bond(best_bond, pages_of_avg_bonds, pages_of_ind_conf);
 
-      // If multiple pages are processed at several  resolutions different pages
+      // If multiple pages are processed at several resolutions different pages
       // may be processed at different resolutions leading to a seemingly different average bond length
       // Currently multi-page documents (PDF and PS) are all processed at the same resolution
       // and single-page images have all structures on the page at the same resolution
@@ -1146,27 +1147,27 @@ int osra_process_image(
                         {
                               out_stream << pages_of_structures[l][i];
                               /*
-                              // Hans, canonical and z coords
-                              if (output_format == "can" || output_format == "smi") { // create 3D sdf representation
-                                    OBMol sdfmol;
-                                    OBConversion sdfconv;
-                                    bool a = sdfconv.SetInAndOutFormats("smi", "sdf");
-                                    bool b = sdfconv.ReadString(&sdfmol, pages_of_structures[l][i]);
-                                    //cout << "Pages: " << pages_of_structures[l][i] << endl;
-                                    //cout << "a: " << a << " b: " << b << endl;
-                                    if (a && b) {
-                                          sdfconv.Convert();
-                                          sdfmol.AddHydrogens(); // add hydrogen atoms
-                                          OBOp* pOp = OBOp::FindType("gen3D"); // locate 3D operations plugin
-                                          if (pOp) {
-                                                pOp->Do(&sdfmol);
-                                          } else {
-                                                cout << "No 'gen3D' operations object found" << endl;
-                                          }
-                                          out_stream  << sdfconv.WriteString(&sdfmol, true) << endl;
-                                    }
-                              }
-                              */
+// Hans, canonical and z coords
+if (output_format == "can" || output_format == "smi") { // create 3D sdf representation
+OBMol sdfmol;
+OBConversion sdfconv;
+bool a = sdfconv.SetInAndOutFormats("smi", "sdf");
+bool b = sdfconv.ReadString(&sdfmol, pages_of_structures[l][i]);
+//cout << "Pages: " << pages_of_structures[l][i] << endl;
+//cout << "a: " << a << " b: " << b << endl;
+if (a && b) {
+sdfconv.Convert();
+sdfmol.AddHydrogens(); // add hydrogen atoms
+OBOp* pOp = OBOp::FindType("gen3D"); // locate 3D operations plugin
+if (pOp) {
+pOp->Do(&sdfmol);
+} else {
+cout << "No 'gen3D' operations object found" << endl;
+}
+out_stream << sdfconv.WriteString(&sdfmol, true) << endl;
+}
+}
+*/
                         }
                               // Dump this structure into a separate file:
                               if (!output_image_file_prefix.empty())
@@ -1226,11 +1227,11 @@ int osra_process_image(
                   }
       }
       /* RIGHT NOW OFTEN THE MAX CONFIDENCE CHOSEN DOESN'T PICK CORRECT DEGREE WHEREAS FIRST PASS ALMOST ALWAYS GETS IT
-      if (polymer[l_index + i_index].is_polymer())
-            for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer[l_index + i_index].brackets.begin(); bracket != polymer[l_index + i_index].brackets.end(); ++bracket) {
-                  out_stream << bracket->first.get_degree() << endl;
-            }
-      */
+if (polymer[l_index + i_index].is_polymer())
+for (vector<pair<Bracket, Bracket> >::iterator bracket = polymer[l_index + i_index].brackets.begin(); bracket != polymer[l_index + i_index].brackets.end(); ++bracket) {
+out_stream << bracket->first.get_degree() << endl;
+}
+*/
 
       // Output the structure with maximum confidence value:
       if (output_format == "mol")
@@ -1240,7 +1241,7 @@ int osra_process_image(
             if (!output_image_file_prefix.empty())
             {
                   ostringstream fname;
-                  fname << output_image_file_prefix  << ".png";
+                  fname << output_image_file_prefix << ".png";
                   if (fname.str() != "")
                   {
                         Image tmp = pages_of_images[l_index][i_index];

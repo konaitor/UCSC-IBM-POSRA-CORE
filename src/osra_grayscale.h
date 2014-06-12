@@ -54,4 +54,4 @@ const Color getBgColor(const Image &image);
 //
 // Returns:
 // a boolean flag indicating whether adaptive thresholding is indicated
-bool convert_to_gray(Image &image, bool invert, bool adaptive, bool verbose);
+bool convert_to_gray(Image &image, bool invert, bool adaptive, bool verbose, string debug_name);
